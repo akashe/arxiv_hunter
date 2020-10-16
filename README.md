@@ -14,3 +14,4 @@ Best possible end results:
 4) Maybe it needs to learn from my behaviour. Which papers I found interesting, which were hoax. Something like off-policy learning.
 
 
+Step 1: create embedding specific to me
