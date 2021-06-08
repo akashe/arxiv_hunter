@@ -1,0 +1,6 @@
+single_document_summarization/python-goose/
+single_document_summarization/summarization_venv/
+single_document_summarization/summarization_venv/lib64
+*.pyc
+.idea
+__pycache__
