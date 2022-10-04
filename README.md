@@ -1,5 +1,15 @@
 # Arxiv Hunter
 
+Using scripts from 'link to karpathys repo' for getting latest papers, downloading pdfs and converting pdfs to text
+python -m venv venv
+python -m venv venv
+pip install -r requirements.txt
+
+run fetch_papers
+run download_pdfs
+run parse_pdf_to_text
+run process_text_file
+
 Find relevant papers on arxiv.
 
 Idea: Too many papers are posted on arxiv every day. It has become hard to find relevant papers and even harder to find papers with good ideas and important contributions. The main idea is to use machine learning to facilitate research and reduce its overhead.

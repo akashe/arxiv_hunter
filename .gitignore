@@ -1,3 +1,8 @@
+venv/
+data/
+tmp/
+data/tmp_pdf/
+*.p
 *.pyc
 .idea
 __pycache__
