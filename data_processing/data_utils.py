@@ -18,10 +18,11 @@ class Config(object):
     db_path = 'db.p'
 
     # intermediate processing folders
-    pdf_dir = os.path.join('data', 'tmp_pdf')
+    pdf_dir = os.path.join('data', 'pdf')
     txt_dir = os.path.join('data', 'txt')
     json_dir = os.path.join('data', 'json')
     tar_dir = 'data'
+    data_dir = 'data'
     tmp_dir = 'tmp'
 
     # parameters for tokenization

@@ -16,7 +16,7 @@ class TrainConfig(object):
     dropout = 0.2
     query_max_len = 64
     passage_max_len = 288
-    num_workers = 1
+    num_workers = 12
     projection = True
     projection_dims = 128
     loss_scaling = True
@@ -39,7 +39,7 @@ def main():
 
     model = Retriever(config)
     dm = ICTDataModule(config)
-    trainer = Trainer()
+    trainer = Trainer(max_steps=500, min_steps=2)
 
     trainer.fit(model, dm)
 

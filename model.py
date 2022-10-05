@@ -28,9 +28,9 @@ class Retriever(LightningModule):
 
         self.topk = config.topk
         self.scale = config.loss_scaling
-        self.scaling_factor = config.scale_factor*math.sqrt(config.model_hidden_dims)
+        self.scaling_factor = config.scale_factor * math.sqrt(config.model_hidden_dims)
 
-        self.correct_index = nn.Parameter(torch.arange(0,1000), requires_grad=False)
+        self.correct_index = nn.Parameter(torch.arange(0, 1000), requires_grad=False)
 
     def forward(self, tokenized_queries, tokenized_passages):
 
@@ -69,7 +69,7 @@ class Retriever(LightningModule):
             _, pred = softmax_scores.topk(maxk, 1, True, True)
             pred = pred.t()
 
-            correct = (pred == self.correct_index.unsqueeze(dim=0)).expand_as(pred)
+            correct = (pred == self.correct_index[:batch_size].unsqueeze(dim=0)).expand_as(pred)
 
             acc = []
             for k in self.topk:
@@ -87,10 +87,11 @@ class Retriever(LightningModule):
 
         loss = F.nll_loss(softmax_scores, self.correct_index[:batch_size], reduction="sum")
 
-        acc = self.get_accuracy(softmax_scores)
+        acc = self.get_accuracy(softmax_scores, batch_size)
 
         self.log("train_loss", loss)
-        self.log("train_acc", acc)
+        for num, i in enumerate(self.topk):
+            self.log(f"train_acc top {i}", acc[num])
 
         return loss
 
@@ -103,29 +104,35 @@ class Retriever(LightningModule):
 
         loss = F.nll_loss(softmax_scores, self.correct_index[:batch_size], reduction="sum")
 
-        acc = self.get_accuracy(softmax_scores)
+        acc = self.get_accuracy(softmax_scores, batch_size)
 
         self.log("val_loss", loss)
-        self.log("val_acc", acc)
+        for num, i in enumerate(self.topk):
+            self.log(f"val_acc top {i}", acc[num])
 
         return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr = self.config.lr,
-                                     betas = (self.config.beta1,self.config.beta2),
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.lr,
+                                     betas=(self.config.beta1, self.config.beta2),
                                      weight_decay=self.config.weight_decay)
 
         return optimizer
 
     def backward(
-        self, loss, optimizer, optimizer_idx, *args, **kwargs
+            self, loss, optimizer, optimizer_idx, *args, **kwargs
     ) -> None:
         loss.backward()
 
-    def optimizer_step(
-        self,
-        epoch,
-        batch_idx,
-        optimizer,
-    ) -> None:
-        optimizer.step()
+    # def optimizer_step(
+    #         self,
+    #         epoch,
+    #         batch_idx,
+    #         optimizer,
+    #         optimizer_idx=0,
+    #         optimizer_closure=None,
+    #         on_tpu=False,
+    #         using_native_amp=False,
+    #         using_lbfgs=False,
+    # ) -> None:
+    #     optimizer.step()

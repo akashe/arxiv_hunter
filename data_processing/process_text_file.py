@@ -120,7 +120,7 @@ def main():
     jsons = set(os.listdir(Config.json_dir))
     with tarfile.open(os.path.join(Config.tar_dir,"processed.tar.gz"), "w:gz") as tar:
         for j in jsons:
-            tar.add(os.path.join(Config.json_dir,j))
+            tar.add(os.path.join(Config.json_dir,j), arcname=j)
 
 
 if __name__ == "__main__":
