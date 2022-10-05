@@ -94,6 +94,8 @@ def main():
             # clean the text
             text = clean_text(text)
 
+            # TODO: remove everything after references
+
             # get abstract of the paper
             abstract = get_abstract(text)
 
