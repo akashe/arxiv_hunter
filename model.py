@@ -31,6 +31,8 @@ class Retriever(LightningModule):
         self.scaling_factor = config.scale_factor * math.sqrt(config.model_hidden_dims)
 
         self.correct_index = nn.Parameter(torch.arange(0, 1000), requires_grad=False)
+        
+        self.lr = config.lr
 
     def forward(self, tokenized_queries, tokenized_passages):
 
@@ -65,7 +67,11 @@ class Retriever(LightningModule):
     def get_accuracy(self, softmax_scores, batch_size):
         # calculate accuracy
         with torch.no_grad():
-            maxk = max(self.topk)
+            # Taking care of cases where maxk can be lower than the batch size
+            topk = [i for i in self.topk if i<= batch_size]
+            maxk = max(topk)
+            
+            
             _, pred = softmax_scores.topk(maxk, 1, True, True)
             pred = pred.t()
 
@@ -73,8 +79,11 @@ class Retriever(LightningModule):
 
             acc = []
             for k in self.topk:
-                correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
-                acc.append(correct_k.mul_(1.0 / batch_size))
+                if k in topk:
+                    correct_k = correct[:k].reshape(-1).float().sum(0, keepdim=True)
+                    acc.append(correct_k.mul_(1.0 / batch_size))
+                else:
+                    acc.append("NA")
 
         return acc
 
@@ -91,7 +100,8 @@ class Retriever(LightningModule):
 
         self.log("train_loss", loss)
         for num, i in enumerate(self.topk):
-            self.log(f"train_acc top {i}", acc[num])
+            if acc[num] != "NA":
+                self.log(f"train_acc top {i}", acc[num], sync_dist=True)
 
         return loss
 
@@ -106,14 +116,15 @@ class Retriever(LightningModule):
 
         acc = self.get_accuracy(softmax_scores, batch_size)
 
-        self.log("val_loss", loss)
+        self.log("val_loss", loss, sync_dist=True)
         for num, i in enumerate(self.topk):
-            self.log(f"val_acc top {i}", acc[num])
+            if acc[num] != "NA":
+                self.log(f"val_acc top {i}", acc[num], sync_dist=True)
 
         return loss
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=self.config.lr,
+        optimizer = torch.optim.Adam(self.parameters(), lr=self.lr,
                                      betas=(self.config.beta1, self.config.beta2),
                                      weight_decay=self.config.weight_decay)
 

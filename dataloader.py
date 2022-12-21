@@ -19,10 +19,11 @@ class ICTDataset(IterableDataset):
     This class stores creates and iterable dataset for all the downloaded
     papers.
     """
-    def __init__(self, total_nodes, global_rank, files):
+    def __init__(self, total_nodes, global_rank, files, mode= "train"):
         super().__init__()
 
         self.files = files[int(global_rank*len(files)/total_nodes):int((global_rank+1)*len(files)/total_nodes)]
+        self.mode = mode
 
     def process_file(self, file_path):
         """
@@ -52,7 +53,10 @@ class ICTDataset(IterableDataset):
 
     def __iter__(self):
         # Return a never ending stream of paragraphs created by processing files in a cycle
-        return chain.from_iterable(self.process_file(i) for i in cycle(self.files))
+        if self.mode=="train":
+            return chain.from_iterable(self.process_file(i) for i in cycle(self.files))
+        else:
+            return chain.from_iterable(self.process_file(i) for i in self.files)
 
     def construct_query(self, text):
         """
@@ -132,22 +136,27 @@ class ICTDataModule(LightningDataModule):
         """
         with tarfile.open(self.data_file) as tar_file:
             tar_file.extractall(self.data_dir)
-
+    
+    def setup(self, stage):
+        
         json_files = get_all_files_with_extension(self.data_dir,"json")
-        random.shuffle(json_files)
+        
+        # Not shuffling to have the same sequence of train and test files on each GPU
+        # Other way would be to phyically save to disk
+        #random.shuffle(json_files)
 
         self.train_json_files = json_files[:int(len(json_files)*self.train_test_split)]
         self.test_json_files = json_files[int(len(json_files)*self.train_test_split):]
 
     def train_dataloader(self):
-        train_dataset = ICTDataset(self.trainer.num_nodes,self.trainer.global_rank, self.train_json_files)
+        train_dataset = ICTDataset(self.trainer.num_nodes,self.trainer.global_rank, self.train_json_files, mode="train")
 
         collate_fn_ = partial(collate_fn, tokenizer=self.tokenizer, query_max_len=self.query_max_len, passage_max_len= self.passage_max_len)
 
         return DataLoader(train_dataset, num_workers=self.num_workers, batch_size= self.batch_size, worker_init_fn= worker_init_fn, collate_fn=collate_fn_, pin_memory= True)
 
     def val_dataloader(self):
-        test_dataset = ICTDataset(self.trainer.num_nodes,self.trainer.global_rank, self.test_json_files)
+        test_dataset = ICTDataset(self.trainer.num_nodes,self.trainer.global_rank, self.test_json_files, mode="test")
 
         collate_fn_ = partial(collate_fn, tokenizer=self.tokenizer, query_max_len=self.query_max_len, passage_max_len= self.passage_max_len)
 

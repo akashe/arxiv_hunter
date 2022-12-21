@@ -16,7 +16,7 @@ class TrainConfig(object):
     dropout = 0.2
     query_max_len = 64
     passage_max_len = 288
-    num_workers = 12
+    num_workers = 4
     projection = True
     projection_dims = 128
     loss_scaling = True
@@ -32,7 +32,7 @@ class TrainConfig(object):
     clip = 1.0
     train_test_split = 0.9
     data_dir = "data/extract_json"
-    data_file = "data/processed.tar.gz"
+    data_file = "data/small_processed.tar.gz"
 
 def main():
     config = TrainConfig()

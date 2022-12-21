@@ -3,6 +3,8 @@ data/
 tmp/
 data/tmp_pdf/
 lightning_logs/
+trained_model/*
+*.db
 *.p
 *.pyc
 .idea
