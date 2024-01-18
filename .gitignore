@@ -10,3 +10,4 @@ trained_model/*
 .idea
 __pycache__
 .ipynb_checkpoints
+__pycache__/
