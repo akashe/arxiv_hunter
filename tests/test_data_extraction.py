@@ -1,9 +1,6 @@
 import pytest
 from datetime import datetime, timedelta
-import sys
-sys.path.append ('/Users/subratamondal/Workspace/web development/arxiv_hunter')
-
-from arxiv_hunter.extract_data.data_extraction import ArxivParser, User
+from ../src/data_extraction import ArxivParser
 
 @pytest.fixture
 def arxiv_parser():
@@ -80,4 +77,3 @@ def test_get_stored_data(arxiv_parser):
     
     # Check that the stored_data variable contains the same data as the extracted_data attribute
     assert stored_data.equals(arxiv_parser.extracted_data)
-

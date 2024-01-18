@@ -73,22 +73,3 @@ class ArxivParser:
     def get_stored_data(self) -> pd.DataFrame:
         # Return the self.extracted_data attribute
         return self.extracted_data
-
-class User:
-    def __init__(self):
-        self.master_data = pd.read_pickle('master_data.pkl')
-        self.user_data = None # this will store the filtered dataframe
-    
-    def search(self, query):
-        mask = self.master_data["pdf_text"].str.contains(query) # create a boolean mask
-        self.user_data = self.master_data[mask] # filter the master_data using the mask
-        return self.user_data
-    
-    def feed(self):
-        return self.user_data.sort_values("published_date", ascending=False).head(2)
-
-if __name__ == "__main__":
-    user1=User()
-    result=user1.search("llm")
-    print(result)
-    
