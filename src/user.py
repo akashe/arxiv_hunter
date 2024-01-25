@@ -1,6 +1,7 @@
 from abc import abstractmethod, ABC
 from recommender import Recommender
 import pandas as pd
+import argparse
 
 class BaseUser(ABC):
     @abstractmethod
@@ -17,11 +18,19 @@ class User(BaseUser):
         self.recommender.recommend(self, query)
 
 if __name__ == "__main__":
+    # Create a parser object
+    parser = argparse.ArgumentParser(description="A recommender system based on tf-idf and cosine similarity")
+
+    # Add an argument for the query
+    parser.add_argument("query", type=str, help="The query to get recommendations for")
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Get the query from the argument
+    query = args.query
+
     df = pd.read_pickle("../data/master_data.pkl")
-    tfidf = Recommender(data=df)
-
-    query = "Attention mechanism, gpt"
-    res = tfidf.recommend(query)
-
-    print(res.shape)
+    recommender = Recommender(data=df)
+    res = recommender.recommend(query)
     print(res)

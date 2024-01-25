@@ -2,6 +2,7 @@ from abc import abstractmethod, ABC
 import numpy as np
 import pandas as pd
 import nltk
+import argparse
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
@@ -21,10 +22,6 @@ class BaseRecommender(ABC):
 
     @abstractmethod
     def transform_data(self):
-        pass
-
-    @abstractmethod
-    def top10(self):
         pass
 
     @abstractmethod
@@ -58,26 +55,30 @@ class Recommender(BaseRecommender):
 
     def transform_data(self):
         self.transformed_data=self.vectorizer.transform(self.corpus)
-    
-    def top10(self, arr, results=10):
-        kth_largest = (results + 1) * -1
-        return np.argsort(arr)[:kth_largest:-1]
 
     def recommend(self, query:str):
-        transformed_query=self.vectorizer.transform(list(query)) 
+        transformed_query=self.vectorizer.transform([query]) 
         cosine_similarities = cosine_similarity(
-            X=self.transformed_data,
-            Y=transformed_query
-        ).flatten()
-        top_related_indices = self.top10(cosine_similarities)
-        return top_related_indices
-    
+            X=transformed_query,
+            Y=self.transformed_data
+        )
+        result=sorted(list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x:x[1])
+        return result[:10]
+
 if __name__ == "__main__":
+    # Create a parser object
+    parser = argparse.ArgumentParser(description="A recommender system based on tf-idf and cosine similarity")
+
+    # Add an argument for the query
+    parser.add_argument("query", type=str, help="The query to get recommendations for")
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    # Get the query from the argument
+    query = args.query
+
     df = pd.read_pickle("../data/master_data.pkl")
-    tfidf = Recommender(data=df)
-
-    query = "Attention mechanism, gpt"
-    res = tfidf.recommend(query)
-
-    print(res.shape)
+    recommender = Recommender(data=df)
+    res = recommender.recommend(query)
     print(res)
