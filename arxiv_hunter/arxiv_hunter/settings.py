@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_bootstrap5',
     'crispy_forms',
-    'my_auth.apps.MyAuthConfig'
 ]
 
 MIDDLEWARE = [
