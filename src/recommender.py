@@ -1,3 +1,5 @@
+import os.path
+import pdb
 from abc import abstractmethod, ABC
 import numpy as np
 import pandas as pd
@@ -10,6 +12,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 nltk.download("stopwords")
+nltk.download('punkt')
 
 class BaseRecommender(ABC):
     @abstractmethod
@@ -43,13 +46,13 @@ class Recommender(BaseRecommender):
         stemmer=SnowballStemmer("english")
         return [stemmer.stem(token) for token in word_tokenize(text) if token.isalpha()]
     
-    def learn_vocabulary(self): 
+    def learn_vocabulary(self):
         english_stopwords=stopwords.words("english")
         self.vectorizer=TfidfVectorizer(
             lowercase=True,
             tokenizer=self.preprocess,
             stop_words=english_stopwords,
-            ngram_range=(1,2)
+            ngram_range=(1,1)
         )
         self.vocabulary=self.vectorizer.fit(self.corpus)
 
@@ -70,15 +73,22 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="A recommender system based on tf-idf and cosine similarity")
 
     # Add an argument for the query
-    parser.add_argument("query", type=str, help="The query to get recommendations for")
+    parser.add_argument("-q", "--query", type=str, help="The query to get recommendations for")
+    parser.add_argument("data_loc",
+                        help="Location for stored data",
+                        nargs='?',
+                        default="data/master_data.pkl")
 
     # Parse the arguments
     args = parser.parse_args()
 
     # Get the query from the argument
     query = args.query
+    data_loc = args.data_loc
 
-    df = pd.read_pickle("../data/master_data.pkl")
+    assert os.path.exists(data_loc), "Data path seems to be missing"
+
+    df = pd.read_pickle(data_loc)
     recommender = Recommender(data=df)
     res = recommender.recommend(query)
     print(res)
