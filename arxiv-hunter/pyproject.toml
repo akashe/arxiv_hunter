@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "arxiv-hunter"
+version = "0.1.0"
+description = ""
+authors = ["Subrata Mondal <subratasubha2@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpie = "^3.2.2"
+fastapi = "^0.109.0"
+pydantic = "^2.6.0"
+uvicorn = "^0.27.0.post1"
+scikit-learn = "^1.4.0"
+nltk = "^3.8.1"
+pandas = "^2.2.0"
+feedparser = "^6.0.11"
+pymupdf = "^1.23.20"
+black = "^24.1.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
