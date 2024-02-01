@@ -21,8 +21,11 @@ poetry install
 3. **Run the module**
 
 ```bash
+# to store the data
+python src/data_extraction.py --max_results 50 --days 50
+
 # to run the "recommender" module
-python -m recommender "Attention mechanism, gpt"
+python src/recommender.py --query "Attention mechanism, gpt"
 
 # to run the "user" module
 python -m user "Attention mechanism, gpt"

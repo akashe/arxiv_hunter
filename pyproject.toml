@@ -12,6 +12,8 @@ scikit-learn = "^1.4.0"
 nltk = "^3.8.1"
 pandas = "^2.2.0"
 crispy-bootstrap5 = "^2023.10"
+feedparser = "^6.0.11"
+pymupdf = "^1.23.20"
 
 
 [build-system]
