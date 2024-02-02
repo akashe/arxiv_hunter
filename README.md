@@ -43,3 +43,9 @@ python -m user "Attention mechanism, gpt"
 
 - `Index 0 i.e 40:` Index of the document.
 - `Index 1 i.e 0.075:` Similarity score of the `query` wrt to the `document` at that position.
+
+### My Questions
+
+1. **Search Feature:** Should we directly call the ARXIV API, if the user search any query or should we use the RECOMMEND method to recommend related papers wrt the user query?
+
+2.
