@@ -48,4 +48,6 @@ python -m user "Attention mechanism, gpt"
 
 1. **Search Feature:** Should we directly call the ARXIV API, if the user search any query or should we use the RECOMMEND method to recommend related papers wrt the user query?
 
-2.
+### Todo
+
+1.

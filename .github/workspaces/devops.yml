@@ -1,0 +1,25 @@
+name: Arxiv Hunter
+on:
+  push:
+    paths-ignore:
+      - "**/*.lock"
+      - "**/*.toml"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.11
+      - name: Install dependencies
+        run: make install
+      - name: Format code
+        run: make format
+      - name: Lint with pylint
+        run: make lint
+      - name: Test with pytest
+        run: make test
+      - name: Build Docker Container
+        run: make build

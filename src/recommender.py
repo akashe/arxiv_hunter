@@ -12,7 +12,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
 nltk.download("stopwords")
-nltk.download('punkt')
+nltk.download("punkt")
+
 
 class BaseRecommender(ABC):
     @abstractmethod
@@ -33,51 +34,59 @@ class BaseRecommender(ABC):
 
 
 class Recommender(BaseRecommender):
-    def __init__(self, data:pd.DataFrame) -> None:
-        self.data=data
-        self.corpus=self.data["pdf_text"]
+    def __init__(self, data: pd.DataFrame) -> None:
+        self.data = data
+        self.corpus = self.data["pdf_text"]
         self.learn_vocabulary()
         self.transform_data()
         super().__init__()
-    
+
     # tokenize, stem and remove punctuation
-    def preprocess(self,text):
+    def preprocess(self, text):
         """word tokenization, snowball stemming and punctuation removal"""
-        stemmer=SnowballStemmer("english")
+        stemmer = SnowballStemmer("english")
         return [stemmer.stem(token) for token in word_tokenize(text) if token.isalpha()]
-    
+
     def learn_vocabulary(self):
-        english_stopwords=stopwords.words("english")
-        self.vectorizer=TfidfVectorizer(
+        english_stopwords = stopwords.words("english")
+        self.vectorizer = TfidfVectorizer(
             lowercase=True,
             tokenizer=self.preprocess,
             stop_words=english_stopwords,
-            ngram_range=(1,1)
+            ngram_range=(1, 1),
         )
-        self.vocabulary=self.vectorizer.fit(self.corpus)
+        self.vocabulary = self.vectorizer.fit(self.corpus)
 
     def transform_data(self):
-        self.transformed_data=self.vectorizer.transform(self.corpus)
+        self.transformed_data = self.vectorizer.transform(self.corpus)
 
-    def recommend(self, query:str):
-        transformed_query=self.vectorizer.transform([query]) 
+    def recommend(self, query: str):
+        transformed_query = self.vectorizer.transform([query])
         cosine_similarities = cosine_similarity(
-            X=transformed_query,
-            Y=self.transformed_data
+            X=transformed_query, Y=self.transformed_data
         )
-        result=sorted(list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x:x[1])
+        result = sorted(
+            list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x: x[1]
+        )
         return result[:10]
+
 
 if __name__ == "__main__":
     # Create a parser object
-    parser = argparse.ArgumentParser(description="A recommender system based on tf-idf and cosine similarity")
+    parser = argparse.ArgumentParser(
+        description="A recommender system based on tf-idf and cosine similarity"
+    )
 
     # Add an argument for the query
-    parser.add_argument("-q", "--query", type=str, help="The query to get recommendations for")
-    parser.add_argument("data_loc",
-                        help="Location for stored data",
-                        nargs='?',
-                        default="data/master_data.pkl")
+    parser.add_argument(
+        "-q", "--query", type=str, help="The query to get recommendations for"
+    )
+    parser.add_argument(
+        "data_loc",
+        help="Location for stored data",
+        nargs="?",
+        default="data/master_data.pkl",
+    )
 
     # Parse the arguments
     args = parser.parse_args()

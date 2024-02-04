@@ -1,25 +1,30 @@
 from abc import abstractmethod, ABC
-from recommender import Recommender
+from src.recommender import Recommender
 import pandas as pd
 import argparse
+
 
 class BaseUser(ABC):
     @abstractmethod
     def search(self):
         pass
 
+
 class User(BaseUser):
-    def __init__(self, preference:dict, recommender:object) -> None:
-        self.preference=preference
-        self.recommender=recommender
+    def __init__(self, preference: dict, recommender: object) -> None:
+        self.preference = preference
+        self.recommender = recommender
         super().__init__()
-    
-    def search(self, query:str):
+
+    def search(self, query: str):
         self.recommender.recommend(self, query)
+
 
 if __name__ == "__main__":
     # Create a parser object
-    parser = argparse.ArgumentParser(description="A recommender system based on tf-idf and cosine similarity")
+    parser = argparse.ArgumentParser(
+        description="A recommender system based on tf-idf and cosine similarity"
+    )
 
     # Add an argument for the query
     parser.add_argument("query", type=str, help="The query to get recommendations for")
@@ -31,6 +36,6 @@ if __name__ == "__main__":
     query = args.query
 
     df = pd.read_pickle("../data/master_data.pkl")
-    recommender = Recommender(data=df)
-    res = recommender.recommend(query)
+    tfidf_recommender = Recommender(data=df)
+    res = tfidf_recommender.recommend(query)
     print(res)
