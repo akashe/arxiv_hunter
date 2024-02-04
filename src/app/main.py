@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from .routers.users import users
-from .routers.papers import papers
+from src.app.routers.users import users
+from src.app.routers.papers import papers
 
 app = FastAPI()
 
