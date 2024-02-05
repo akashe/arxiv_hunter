@@ -2,6 +2,8 @@ import pytest
 from datetime import datetime, timedelta
 from src.logics.data_extraction import ArxivParser
 
+import pandas as pd
+
 
 @pytest.fixture
 def arxiv_parser():
