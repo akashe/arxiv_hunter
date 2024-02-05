@@ -17,7 +17,7 @@ nltk.download("punkt")
 
 class BaseRecommender(ABC):
     @abstractmethod
-    def preprocess(self):
+    def preprocess(self, text):
         pass
 
     @abstractmethod

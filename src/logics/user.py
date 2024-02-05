@@ -1,5 +1,5 @@
 from abc import abstractmethod, ABC
-from src.recommender import Recommender
+from src.logics.recommender import Recommender
 import pandas as pd
 import argparse
 

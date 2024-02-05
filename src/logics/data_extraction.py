@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 import fitz  # this is pymupdf
 from typing import Dict, List, Tuple
 
-STANDARD_SEARCH_QUERY = f"cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML OR cat:cs.IR"
+STANDARD_SEARCH_QUERY = "cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML OR cat:cs.IR"
 
 
 class ArxivParser:

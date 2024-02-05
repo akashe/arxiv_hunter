@@ -1,6 +1,6 @@
 import pytest
 from datetime import datetime, timedelta
-from src.data_extraction import ArxivParser
+from src.logics.data_extraction import ArxivParser
 
 
 @pytest.fixture

@@ -4,11 +4,11 @@ install:
 
 format:
 	# format code
-	black src/. tests/.
+	black src/. tests/. 
 
 lint:
 	# flake8 or pylint
-	pylint --disable=R,C src/. tests/.
+	pylint --disable=R,C src/. tests/.  
 test:
 	# test
 	python -m pytest --cov=mylib -r tests/
@@ -27,4 +27,7 @@ deploy:
 install-local:
 	# use this to work with poetry in your local environment, github actions were throwing error
 	# poetry install --no-root
-all: install format lint test deploy
+all: format lint
+run-fastapi:
+	# Run fastapi
+	uvicorn src.app.main:app --reload

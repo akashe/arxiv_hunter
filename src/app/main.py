@@ -1,14 +1,41 @@
-from fastapi import FastAPI
-from src.app.routers.users import users
-from src.app.routers.papers import papers
+from typing import List
+from fastapi import FastAPI, Query, status
+from src.app.schemas import SearchPaperResponseSchema, RecommendPaperResponseSchema
+from src.logics.user import User, Recommender
 
 app = FastAPI()
 
 
 @app.get("/")
 async def home():
-    return "Welcome to Arxiv Hunter"
+    """Homepage"""
+    return "Welcome to Arxiv Hunter: Feed"
 
 
-app.include_router(users, prefix="/users", tags=["users"])
-app.include_router(papers, prefix="/papers", tags=["papers"])
+user = User(preference={}, recommender=Recommender(data="../../data/master_data.pkl"))
+
+
+@app.get(
+    path="/search",
+    status_code=status.HTTP_200_OK,
+    response_model=List[SearchPaperResponseSchema],
+)
+async def search(
+    query: str = Query(default="Attention, Mechanism, LLM"),
+) -> List[SearchPaperResponseSchema]:
+    """Search Research Papers"""
+    print(user.search(query=query))
+    return [{"id": "some_id", "title": "some_title"}]
+
+
+@app.get(
+    path="/recommend",
+    status_code=status.HTTP_200_OK,
+    response_model=List[RecommendPaperResponseSchema],
+)
+async def recommend(
+    query: str = Query(default="Attention, Mechanism, LLM"),
+) -> [RecommendPaperResponseSchema]:
+    """Recommend Research Papers"""
+    print(query)
+    return [{"id": "some_id", "title": "some_title"}]
