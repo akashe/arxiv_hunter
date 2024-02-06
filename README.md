@@ -44,6 +44,8 @@ python -m user "Attention mechanism, gpt"
 - `Index 0 i.e 40:` Index of the document.
 - `Index 1 i.e 0.075:` Similarity score of the `query` wrt to the `document` at that position.
 
+## Continuous Integration
+
 ## Integrate with AWS ECR (Elastic Container Registry)
 
 ## Integrate with AWS CodeBuild

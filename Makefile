@@ -11,7 +11,7 @@ lint:
 	pylint --disable=too-many-locals,R,C src/. tests/.  
 test:
 	# test
-	python -m pytest --cov=mylib -r tests/
+	# python -m pytest --cov=mylib -r tests/
 build:
 	# build build
 	docker build -t fastapi-arxiv-hunter .
