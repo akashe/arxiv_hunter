@@ -1,10 +1,10 @@
+"""Implementation of TFIDF Recommender"""
+
 import os.path
-import pdb
+import argparse
 from abc import abstractmethod, ABC
-import numpy as np
 import pandas as pd
 import nltk
-import argparse
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from nltk.stem.snowball import SnowballStemmer
@@ -16,24 +16,28 @@ nltk.download("punkt")
 
 
 class BaseRecommender(ABC):
+    """Parent Recommender Class"""
+
     @abstractmethod
     def preprocess(self, text):
-        pass
+        """Preprocess data for tfidf"""
 
     @abstractmethod
     def learn_vocabulary(self):
-        pass
+        """Learn tfidf vocabulary"""
 
     @abstractmethod
     def transform_data(self):
-        pass
+        """Transform data wrt the Learnt Vocabulary"""
 
     @abstractmethod
-    def recommend(self):
-        pass
+    def recommend(self, query):
+        """Recommend"""
 
 
 class Recommender(BaseRecommender):
+    """Recommender Implementation"""
+
     def __init__(self, data: pd.DataFrame) -> None:
         self.data = data
         self.corpus = self.data["pdf_text"]
@@ -92,12 +96,12 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Get the query from the argument
-    query = args.query
+    user_query = args.query
     data_loc = args.data_loc
 
     assert os.path.exists(data_loc), "Data path seems to be missing"
 
     df = pd.read_pickle(data_loc)
     recommender = Recommender(data=df)
-    res = recommender.recommend(query)
+    res = recommender.recommend(user_query)
     print(res)

@@ -31,3 +31,7 @@ all: format lint
 run-fastapi:
 	# Run fastapi
 	uvicorn src.app.main:app --reload
+
+recommender:
+	black src/logics/recommender.py
+	pylint src/logics/recommender.py
