@@ -17,7 +17,7 @@ build:
 	docker build -t fastapi-arxiv-hunter .
 run:
 	# docker run
-	docker run -p 127.0.0.1:8080:8080 93280c6253ef
+	# docker run -p 127.0.0.1:8080:8080 5b3b86683ffe
 deploy:
 	# deploy
 	# aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 561744971673.dkr.ecr.us-east-1.amazonaws.com
