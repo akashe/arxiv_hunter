@@ -8,7 +8,7 @@ format:
 
 lint:
 	# flake8 or pylint
-	pylint --disable=R,C src/. tests/.  
+	pylint --disable=too-many-locals,R,C src/. tests/.  
 test:
 	# test
 	python -m pytest --cov=mylib -r tests/
@@ -31,7 +31,3 @@ all: format lint
 run-fastapi:
 	# Run fastapi
 	uvicorn src.app.main:app --reload
-
-recommender:
-	black src/logics/recommender.py src/logics/user.py
-	pylint src/logics/recommender.py src/logics/user.py

@@ -46,7 +46,7 @@ def homepage():
 
 # Define a route for searching documents
 @app.get("/search", response_model=List[schemas.SearchResult])
-def search_arxiv_papers(query:str = Query(default="LLM", min_length=3, max_length=64)):
+def search_arxiv_papers(query: str = Query(default="LLM", min_length=3, max_length=64)):
     """Search through the Arxiv API"""
     # Validate the input and perform the search
     try:
@@ -67,7 +67,7 @@ def search_arxiv_papers(query:str = Query(default="LLM", min_length=3, max_lengt
 
 # Define a route for getting recommendations
 @app.get("/recommend", response_model=List[schemas.Recommendation])
-def get_recommendations(keywords:Optional[List[str]] = Query(max_length=16)):
+def get_recommendations(keywords: Optional[List[str]] = Query(max_length=16)):
     """Arxiv Research Paper Recommendation"""
     # Validate the input and generate recommendations
     try:

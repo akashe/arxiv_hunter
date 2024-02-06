@@ -1,9 +1,7 @@
 """Schemas using Pydantic for Request and Response Model"""
 
-from typing import List, Optional, Dict, Any
+from typing import List, Dict, Any
 from pydantic import BaseModel, HttpUrl
-
-
 
 
 # Define a response model for the search results
