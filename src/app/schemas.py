@@ -1,15 +1,21 @@
-"""Schemas - Pydantic Models for Request, Response Model"""
+"""Schemas using Pydantic for Request and Response Model"""
 
-from pydantic import BaseModel
+from typing import List, Optional, Dict, Any
+from pydantic import BaseModel, HttpUrl
 
 
-class SearchPaperResponseSchema(BaseModel):
-    "Schema for the Research Paper"
-    id: str
+
+
+# Define a response model for the search results
+class SearchResult(BaseModel):
+    """Response Model for the Search Result"""
+
     title: str
+    pdf_link: HttpUrl
 
 
-class RecommendPaperResponseSchema(BaseModel):
-    "Schema for the Research Paper"
-    id: str
-    title: str
+# Define a response model for the recommendations
+class Recommendation(BaseModel):
+    """Response Model for the Recommendation"""
+
+    items: List[Dict[str, Any]]
