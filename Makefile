@@ -33,5 +33,5 @@ run-fastapi:
 	uvicorn src.app.main:app --reload
 
 recommender:
-	black src/logics/recommender.py
-	pylint src/logics/recommender.py
+	black src/logics/recommender.py src/logics/user.py
+	pylint src/logics/recommender.py src/logics/user.py

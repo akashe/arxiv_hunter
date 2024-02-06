@@ -1,23 +1,37 @@
+"""User Implementation"""
+
 from abc import abstractmethod, ABC
-from src.logics.recommender import Recommender
-import pandas as pd
+from typing import Optional, List
 import argparse
+import pandas as pd
+from src.logics.recommender import Recommender
 
 
 class BaseUser(ABC):
+    """Base User Class"""
+
     @abstractmethod
-    def search(self):
-        pass
+    def search(self, query: str):
+        """search feature"""
+
+    @abstractmethod
+    def feed(self):
+        """feed feature"""
 
 
 class User(BaseUser):
-    def __init__(self, preference: dict, recommender: object) -> None:
-        self.preference = preference
+    """User Class Implementation"""
+
+    def __init__(self, keywords: Optional[List[str]], recommender: object) -> None:
+        self.keywords = keywords
         self.recommender = recommender
         super().__init__()
 
     def search(self, query: str):
         self.recommender.recommend(self, query)
+
+    def feed(self):
+        return "feed"
 
 
 if __name__ == "__main__":
@@ -33,9 +47,9 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # Get the query from the argument
-    query = args.query
+    user_query = args.query
 
     df = pd.read_pickle("../data/master_data.pkl")
     tfidf_recommender = Recommender(data=df)
-    res = tfidf_recommender.recommend(query)
+    res = tfidf_recommender.recommend(user_query)
     print(res)
