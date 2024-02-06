@@ -27,7 +27,7 @@ deploy:
 install-local:
 	# use this to work with poetry in your local environment, github actions were throwing error
 	# poetry install --no-root
-all: format lint
+all: format lint build run deploy
 run-fastapi:
 	# Run fastapi
 	uvicorn src.app.main:app --reload
