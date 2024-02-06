@@ -1,6 +1,6 @@
 """Entry Point for the FastAPI App"""
 
-from typing import List
+from typing import List, Optional
 from fastapi import FastAPI, HTTPException, responses, status, Query
 from src.app import schemas
 
@@ -10,24 +10,36 @@ app = FastAPI()
 @app.get(path="/", response_class=responses.HTMLResponse)
 def homepage():
     body = """
-    <html>
-        <head>
-            <style>
-                h1 {
-                    text-align: center;
-                }
-                a {
-                    display: block;
-                    text-align: center;
-                }
-            </style>
-        </head>
-        <body>
-            <h1>Welcome to Arxiv Hunter</h1>
-            <a href="http://127.0.0.1:8000/search?query=Attention is all you need.">Search</a>
-            <a href="http://127.0.0.1:8000/recommend?keywords=['LLM', 'Attention', 'GPT'].">Recommend</a>
-        </body>
-    </html>
+        <html>
+            <head>
+                <style>
+                    h1 {
+                        text-align: center;
+                    }
+                    form {
+                        display: block;
+                        text-align: center;
+                    }
+                </style>
+            </head>
+            <body>
+                <h1>Welcome to Arxiv Hunter</h1>
+                <!-- Use a form tag with the action and method attributes -->
+                <form action="http://127.0.0.1:8000/search" method="GET">
+                    <!-- Use an input tag with the type, name, and placeholder attributes -->
+                    <input type="text" name="query" placeholder="Attention is all you need.">
+                    <!-- Use an input tag with the type and value attributes -->
+                    <input type="submit" value="Search">
+                </form>
+                <!-- Use another form tag with the action and method attributes -->
+                <form action="http://127.0.0.1:8000/recommend" method="GET">
+                    <!-- Use another input tag with the type, name, and placeholder attributes -->
+                    <input type="text" name="keywords" placeholder="LLM, Attention, GPT">
+                    <!-- Use another input tag with the type and value attributes -->
+                    <input type="submit" value="Recommend">
+                </form>
+            </body>
+        </html>
     """
     return responses.HTMLResponse(content=body)
 
@@ -55,7 +67,7 @@ def search_arxiv_papers(query:str = Query(default="LLM", min_length=3, max_lengt
 
 # Define a route for getting recommendations
 @app.get("/recommend", response_model=List[schemas.Recommendation])
-def get_recommendations(keywords:List[str] = Query(max_length=16)):
+def get_recommendations(keywords:Optional[List[str]] = Query(max_length=16)):
     """Arxiv Research Paper Recommendation"""
     # Validate the input and generate recommendations
     try:
