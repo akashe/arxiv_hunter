@@ -1,5 +1,4 @@
 """Entry Point for the FastAPI App"""
-
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, responses, status, Query
 from src.app import schemas
@@ -82,3 +81,7 @@ def get_recommendations(keywords: Optional[List[str]] = Query(max_length=16)):
     return responses.JSONResponse(
         content=recommendations, status_code=status.HTTP_200_OK
     )
+
+# if __name__=="__main__":
+#     import uvicorn
+#     uvicorn.run(app, port=8080, host="0.0.0.0")
