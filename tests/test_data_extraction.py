@@ -1,13 +1,13 @@
 import pytest
 from datetime import datetime, timedelta
-from src.logics.data_extraction import ArxivParser
+import src.logics.data_extraction as data_extraction
 
 import pandas as pd
 
 
 @pytest.fixture
 def arxiv_parser():
-    return ArxivParser()
+    return data_extraction.ArxivParser
 
 
 # Test the get_results method with different parameters
