@@ -1,10 +1,17 @@
 """Entry Point for the FastAPI App"""
-from typing import List, Optional
-from fastapi import FastAPI, HTTPException, responses, status, Query
-from src.app import schemas
+from typing import List, Optional, Annotated
+from fastapi import FastAPI, HTTPException, Query, Depends
+from fastapi import responses, status, security
+from ..app import schemas
 
 app = FastAPI()
 
+oauth2_scheme = security.OAuth2PasswordBearer(tokenUrl="token")
+
+
+@app.get("/items/")
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
+    return {"token": token}
 
 @app.get(path="/", response_class=responses.HTMLResponse)
 def homepage():
