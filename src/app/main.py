@@ -1,53 +1,26 @@
 """Entry Point for the FastAPI App"""
-from typing import List, Optional, Annotated
-from fastapi import FastAPI, HTTPException, Query, Depends
-from fastapi import responses, status, security
+from pathlib import Path
+from typing import List, Optional
+from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import responses, status
+from fastapi.templating import Jinja2Templates
 from ..app import schemas
+
+BASE_PATH = Path(__file__).resolve().parent
+print(f"BASE_PATH: {BASE_PATH}")
+TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
 
 app = FastAPI()
 
-oauth2_scheme = security.OAuth2PasswordBearer(tokenUrl="token")
-
-
-@app.get("/items/")
-async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
-    return {"token": token}
-
-@app.get(path="/", response_class=responses.HTMLResponse)
-def homepage():
-    body = """
-        <html>
-            <head>
-                <style>
-                    h1 {
-                        text-align: center;
-                    }
-                    form {
-                        display: block;
-                        text-align: center;
-                    }
-                </style>
-            </head>
-            <body>
-                <h1>Welcome to Arxiv Hunter</h1>
-                <!-- Use a form tag with the action and method attributes -->
-                <form action="http://127.0.0.1:8000/search" method="GET">
-                    <!-- Use an input tag with the type, name, and placeholder attributes -->
-                    <input type="text" name="query" placeholder="Attention is all you need.">
-                    <!-- Use an input tag with the type and value attributes -->
-                    <input type="submit" value="Search">
-                </form>
-                <!-- Use another form tag with the action and method attributes -->
-                <form action="http://127.0.0.1:8000/recommend" method="GET">
-                    <!-- Use another input tag with the type, name, and placeholder attributes -->
-                    <input type="text" name="keywords" placeholder="LLM, Attention, GPT">
-                    <!-- Use another input tag with the type and value attributes -->
-                    <input type="submit" value="Recommend">
-                </form>
-            </body>
-        </html>
-    """
-    return responses.HTMLResponse(content=body)
+@app.get(path="/")
+def homepage(request:Request, response_model=responses.HTMLResponse):
+    return TEMPLATES.TemplateResponse(
+        "home.html",
+        {
+            "request":request,
+            "name": "Subrata Mondal"
+        }
+    )
 
 
 # Define a route for searching documents

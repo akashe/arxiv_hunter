@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arxiv Hunter</title>
+</head>
+<body>
+  <h1>Welcome to Arxiv Hunter</h1>
+  <!-- Use a form tag with the action and method attributes -->
+  <form action="http://127.0.0.1:8000/search" method="GET">
+      <!-- Use an input tag with the type, name, and placeholder attributes -->
+      <input type="text" name="query" placeholder="Attention is all you need.">
+      <!-- Use an input tag with the type and value attributes -->
+      <input type="submit" value="Search">
+  </form>
+  <!-- Use another form tag with the action and method attributes -->
+  <form action="http://127.0.0.1:8000/recommend" method="GET">
+      <!-- Use another input tag with the type, name, and placeholder attributes -->
+      <input type="text" name="keywords" placeholder="LLM, Attention, GPT">
+      <!-- Use another input tag with the type and value attributes -->
+      <input type="submit" value="Recommend">
+  </form>
+</body>
+</html>
