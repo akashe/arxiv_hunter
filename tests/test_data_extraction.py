@@ -1,8 +1,7 @@
-import pytest
 from datetime import datetime, timedelta
-import src.logics.data_extraction as data_extraction
-
+import pytest
 import pandas as pd
+from src.logics import data_extraction
 
 
 @pytest.fixture

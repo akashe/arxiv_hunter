@@ -4,7 +4,7 @@ from abc import abstractmethod, ABC
 from typing import Optional, List
 import argparse
 import pandas as pd
-from recommender import Recommender
+from .recommender import Recommender
 
 
 class BaseUser(ABC):

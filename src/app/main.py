@@ -1,4 +1,5 @@
 """Entry Point for the FastAPI App"""
+
 from pathlib import Path
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Query, Request
@@ -12,14 +13,11 @@ TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
 
 app = FastAPI()
 
+
 @app.get(path="/")
-def homepage(request:Request, response_model=responses.HTMLResponse):
+def homepage(request: Request):
     return TEMPLATES.TemplateResponse(
-        "home.html",
-        {
-            "request":request,
-            "name": "Subrata Mondal"
-        }
+        "home.html", {"request": request, "name": "Subrata Mondal"}
     )
 
 
@@ -61,6 +59,7 @@ def get_recommendations(keywords: Optional[List[str]] = Query(max_length=16)):
     return responses.JSONResponse(
         content=recommendations, status_code=status.HTTP_200_OK
     )
+
 
 # if __name__=="__main__":
 #     import uvicorn
