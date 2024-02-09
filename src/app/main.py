@@ -1,11 +1,12 @@
 """Entry Point for the FastAPI App"""
-
+import os
 from pathlib import Path
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi import responses, status
 from fastapi.templating import Jinja2Templates
 import pandas as pd
+from fastapi.staticfiles import StaticFiles
 
 from src.logics.arxiv_recommender import LearnTransformVocabulary, Recommender
 from src.logics import arxiv_search
@@ -20,11 +21,11 @@ search = arxiv_search.ArxivSearcher()
 
 BASE_PATH = Path(__file__).resolve().parent
 print(f"BASE_PATH: {BASE_PATH}")
-TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
 
 app = FastAPI()
 
-
+TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
+app.mount("/static", StaticFiles(directory="src/static"), name="static")
 @app.get(path="/")
 def homepage(request: Request):
     return TEMPLATES.TemplateResponse(
