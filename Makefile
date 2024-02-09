@@ -32,3 +32,7 @@ all: format lint build run deploy
 run-fastapi:
 	# Run fastapi
 	uvicorn src.app.main:app --reload
+
+run-extractor:
+	black src/business_logic/arxiv_extractor.py
+	pylint src/business_logic/arxiv_extractor.py

@@ -23,7 +23,7 @@ class ArxivParser:
     def __init__(self, data_path="../data/"):
         self.extracted_data: List[Dict[str, str]] = (
             []
-        )  # create an empty list instead of a dataframe
+        )
 
         if not os.path.exists(data_path):
             os.makedirs(data_path)
@@ -35,7 +35,7 @@ class ArxivParser:
         days: int = 60,
         search_query: str = STANDARD_SEARCH_QUERY,
     ) -> List[Dict[str, str]]:
-        # Construct the url with the query parameters
+
         """Get results from the Arxiv API"""
 
         params = {
@@ -47,51 +47,45 @@ class ArxivParser:
         }
         url = self.base_url + "?" + requests.compat.urlencode(params)
 
-        # Send a GET request to the api endpoint & wait for 15 secs
+        
         response = requests.get(url, timeout=15)
-        # Parse the response
+        
         entries = feedparser.parse(response.text).entries
 
         downloaded_data: List[Dict[str, str]] = (
             []
-        )  # create an empty list instead of a dictionary
+        ) 
 
-        # Loop through the entries
+       
         for entry in tqdm(entries):
             published_date = datetime.strptime(entry.published, "%Y-%m-%dT%H:%M:%SZ")
             current_date = datetime.now()
             date_diff = (current_date - published_date).days
 
-            # Check if the date difference is less than or equal to the days parameter
+           
             if date_diff <= days:
-                new_id = entry.id
-                title = entry.title
-                link = entry.link
-                summary = entry.summary
-
-                # Get the pdf link by replacing the "abs" with "pdf" in the link
+                link = entry.link              
                 pdf_link = link.replace("abs", "pdf")
-                # Get the pdf content by sending a GET request to the pdf link
                 pdf_content = requests.get(pdf_link, timeout=15).content
                 pdf_file = fitz.open(stream=pdf_content, filetype="pdf")
-                # Extract the text from the pdf file
+                
                 pdf_text = ""
                 for page in pdf_file:
                     pdf_text += page.get_text()
-                # Store the extracted data in a dictionary and append it to the list
+                
                 downloaded_data.append(
                     {
-                        "id": new_id,
-                        "title": title,
-                        "published_date": published_date,
+                        "id": entry.id,
+                        "title": entry.title,
+                        "summary": entry.summary,
+                        "published_date": str(published_date),
                         "pdf_link": pdf_link,
-                        "summary": summary,
                         "pdf_text": pdf_text,
                     }
                 )
-        # Extend the extracted data list with the downloaded data list
+        
         self.extracted_data.extend(downloaded_data)
-        # Return the list as it is
+        
         return self.extracted_data
 
     def store_data(
@@ -104,10 +98,10 @@ class ArxivParser:
         self.extracted_data = self.get_results(max_results, days)
 
         assert len(self.extracted_data) > 0, "Got no results with the search query"
-        # Convert the published_date to a string format
+        
         for data in self.extracted_data:
             data["published_date"] = data["published_date"].strftime("%Y-%m-%d")
-        # Save the list of dictionaries as a json file
+       
         save_location = os.path.join(self.data_path, save_file_name)
         with open(save_location, "w", encoding="utf-8") as f:
             json.dump(self.extracted_data, f, indent=4)
@@ -132,7 +126,7 @@ if __name__ == "__main__":
         type=str,
         help="Maximum results to store",
         nargs="?",
-        default=50,
+        default=5,
     )
     parser.add_argument(
         "-d",

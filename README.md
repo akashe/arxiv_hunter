@@ -1,3 +1,8 @@
+<h1 align="center">CodeBuild</h1>
+<p align="center">
+    <img src="https://github.com/akashe/arxiv_hunter/actions/workflows/devops.yml/badge.svg">
+</p>
+
 # To run the dev branch locally
 
 **Note** Assumed that you are inside the `src` folder of the `dev-branch`.
