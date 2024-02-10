@@ -24,12 +24,15 @@ print(f"BASE_PATH: {BASE_PATH}")
 
 app = FastAPI()
 
-TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
-app.mount("/static", StaticFiles(directory="src/static"), name="static")
+# TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
+TEMPLATES = Jinja2Templates(directory=BASE_PATH/"../templates")
+app.mount("/static", StaticFiles(directory=BASE_PATH/"../static"), name="static")
+
+
 @app.get(path="/")
 def homepage(request: Request):
     return TEMPLATES.TemplateResponse(
-        "home.html", {"request": request, "name": "Subrata Mondal"}
+        "index.html", {"request": request, "name": "Subrata Mondal"}
     )
 
 
