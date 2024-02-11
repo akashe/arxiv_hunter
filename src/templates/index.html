@@ -1,19 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://unpkg.com/htmx.org@1.9.10" integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC" crossorigin="anonymous"></script>
-    <script src="https://cdn.tailwindcss.com" ></script>
     <title>Document</title>
-    <link rel="stylesheet" href="../static/normalize.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.10"
+        integrity="sha384-D1Kt99CQMDuVetoL1lrYwg5t+9QdHe7NLX/SoJYkXDFfX37iInKRy5xLSi8nO7UC"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../static/styles.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
+
 <body>
-    <div class="text-center">
-        <h1 class="text-2xl font-bold my-5">Arxiv Hunter</h1>
-        <button hx-get="https://jsonplaceholder.typicode.com/users" hx-trigger="click" class="bg-blue-500 text-white py-2 px-3 my-5 rounded-lg">Search</button>
-        <button class="bg-blue-500 text-white py-2 px-3 my-5 rounded-lg">Recommend</button>
+    <nav>
+        <div class="logo">
+            <a class="logo" href="#">Arxiv Hunter</a>
+        </div>
+        <div class="top-right-container">
+            <div class="top-right">Log in</div>
+            <div class="top-right">Contact</div>
+        </div>
+    </nav>
+
+    <div class="search-bar-container">
+        <input class="search-bar" type="text" name="search" id=""
+            placeholder="Search latest research papers directly from here...">
     </div>
+
+    <div class="research-paper-container">
+        <div class="research-paper">
+            <div class="paper-id">
+                <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus culpa eligendi cum vel
+                    dolor nisi
+                    repudiandae corrupti commodi a alias? Lorem ipsum dolor sit amet consectetur adipisicing elit.</a>
+            </div>
+            <div class="paper-summary">
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis eveniet placeat
+                    molestias, illo
+                    molestiae eligendi cumque esse enim fuga est vel reprehenderit atque quo ullam nam, inventore totam
+                    non nesciunt. Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem, accusamus optio
+                    praesentium iusto ad beatae molestias similique fugiat nobis rerum quod vel repellat illum numquam
+                    officia tempore commodi architecto asperiores? Enim dolorem sed eligendi doloremque fugiat
+                    voluptatem nostrum expedita nobis nesciunt nulla, ullam ipsam omnis nemo hic molestias facilis.
+                    Quae!</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2024 by Arxiv-Hunter. All rights reserved.</p>
+        <p><a href="mailto:arxivhunter@gmail.com">arxivhunter@gmail.com</a></p>
+        <p>This website is created for educational purposes only.</p>
+    </footer>
+
 </body>
+
 </html>

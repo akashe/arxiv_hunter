@@ -1,5 +1,6 @@
 """Entry Point for the FastAPI App"""
 import os
+import json
 from pathlib import Path
 from typing import List, Optional
 from fastapi import FastAPI, HTTPException, Query, Request
@@ -32,13 +33,14 @@ app.mount("/static", StaticFiles(directory=BASE_PATH/"../static"), name="static"
 @app.get(path="/")
 def homepage(request: Request):
     return TEMPLATES.TemplateResponse(
-        "index.html", {"request": request, "name": "Subrata Mondal"}
+        name = "index.html", 
+        context = {"request": request, "name": "Subrata Mondal"}
     )
 
 
 # Define a route for searching documents
 @app.get("/search", response_model=List[schemas.SearchResult])
-def search_arxiv_papers(query: str = Query(default="LLM", min_length=3, max_length=64)):
+def search_arxiv_papers(request:Request, query: str = Query(default="LLM, Attention, GPT", min_length=3, max_length=64)):
     """Search through the Arxiv API"""
     # Validate the input and perform the search
     try:
@@ -51,7 +53,16 @@ def search_arxiv_papers(query: str = Query(default="LLM", min_length=3, max_leng
         ) from e
     # Return the results or an empty list if none are found
     if results:
-        return responses.JSONResponse(content=results, status_code=status.HTTP_200_OK)
+        results = json.loads(results)
+        return TEMPLATES.TemplateResponse(
+            name="search.html",
+            context={
+                "request":request,
+                "results":results
+            }
+
+        )
+        # return responses.JSONResponse(content=results, status_code=status.HTTP_200_OK)
     raise HTTPException(
         status_code=status.HTTP_400_BAD_REQUEST, detail="No results found"
     )
@@ -59,7 +70,7 @@ def search_arxiv_papers(query: str = Query(default="LLM", min_length=3, max_leng
 
 # Define a route for getting recommendations
 @app.get("/recommend", response_model=List[schemas.Recommendation])
-def get_recommendations(query: str):
+def get_recommendations(request:Request, query: str = Query(default="LLM, Attention, GPT")):
     """Arxiv Research Paper Recommendation"""
     vocabulary = LearnTransformVocabulary(
         json_data = "../../data/master_data.json"
