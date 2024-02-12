@@ -25,12 +25,22 @@
         </div>
     </nav>
 
-    <div class="search-bar-container">
+    <!-- <div class="search-bar-container">
         <input class="search-bar" type="text" name="search" id=""
             placeholder="Search latest research papers directly from here...">
+    </div> -->
+
+    <div class="search-bar-container">
+        <input class="search-bar" type="text" name="search" id="search-input"
+            placeholder="Search latest research papers directly from here..." hx-get="http://127.0.0.1:8000/search"
+            hx-trigger="click on .search-icon, keypress[enter]" hx-params="query:search-input.value"
+            hx-target="#results" hx-swap="outerHTML">
     </div>
 
-    <div class="research-paper-container">
+    <div id="results"></div>
+
+
+    <!-- <div class="research-paper-container">
         <div class="research-paper">
             <div class="paper-id">
                 <a href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus culpa eligendi cum vel
@@ -48,7 +58,10 @@
                     Quae!</p>
             </div>
         </div>
-    </div>
+    </div> -->
+
+    {% block content %}
+    {% endblock %}
 
     <footer>
         <p>© 2024 by Arxiv-Hunter. All rights reserved.</p>
