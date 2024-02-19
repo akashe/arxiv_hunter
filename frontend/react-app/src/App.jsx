@@ -5,7 +5,7 @@ import Footer from './components/Footer'
 
 function App() {
   return (
-    <div className='max-w-[800px] min-w-[400px] bg-white mx-auto'>
+    <div className='max-w-[800px] min-w-min bg-white mx-auto'>
       <Header></Header>
       <Main></Main>
       <Footer></Footer>
