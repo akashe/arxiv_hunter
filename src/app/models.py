@@ -1,10 +1,12 @@
 """Database Models: Represent SQL tables and relationships."""
+
 import datetime as _dt
 
 import sqlalchemy as _sql
 import sqlalchemy.orm as _orm
 
 import database as _database
+
 
 class User(_database.BASE):
     """Represents a user in the database.
@@ -17,6 +19,7 @@ class User(_database.BASE):
 
     Has a one-to-many relationship with the Post model, meaning a user can create many posts.
     """
+
     __tablename__ = "users"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
     email = _sql.Column(_sql.String, unique=True, index=True)
@@ -25,6 +28,7 @@ class User(_database.BASE):
 
     # relationship with 'Post' model
     posts = _orm.relationship("Post", back_populates="owner")
+
 
 class Post(_database.BASE):
     """Represents a post created by a user.
@@ -39,6 +43,7 @@ class Post(_database.BASE):
 
     Belongs to the User model, meaning a post is created by a specific user.
     """
+
     __tablename__ = "posts"
     id = _sql.Column(_sql.Integer, primary_key=True, index=True)
     title = _sql.Column(_sql.String, index=True)

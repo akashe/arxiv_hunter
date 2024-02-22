@@ -6,6 +6,7 @@ import argparse
 import pandas as pd
 from src.logics.arxiv_recommender import Recommender
 
+
 class BaseUser(ABC):
     """Base User Class"""
 
@@ -34,7 +35,10 @@ class User(BaseUser):
 
 
 if __name__ == "__main__":
-    user=User(keywords=["LLM, ChatGPT, Model, Language"], recommender=Recommender(data="../../data/master_data.json"))
+    user = User(
+        keywords=["LLM, ChatGPT, Model, Language"],
+        recommender=Recommender(data="../../data/master_data.json"),
+    )
     res = user.search("Mistral, Llama, LLM, Attention")
     print(user)
 

@@ -71,12 +71,13 @@ class LearnTransformVocabulary(LearnVocabularyBase):
                 self.transformed_data = pickle.load(f)
         except FileNotFoundError:
             with open("data/vectorizer.pkl", "wb") as f:
-                    pickle.dump(self.vectorizer, f)
+                pickle.dump(self.vectorizer, f)
             with open("data/transformed_data.pkl", "wb") as f:
                 pickle.dump(self.transformed_data, f)
 
+
 class Recommender:
-    def __init__(self, vectorizer_path:str, vocabulary_path:str):
+    def __init__(self, vectorizer_path: str, vocabulary_path: str):
         # load the vectorizer and the learnt vocabulary from the pickle files
         with open(vectorizer_path, "rb") as f:
             self.vectorizer = pickle.load(f)
@@ -98,20 +99,17 @@ class Recommender:
         return result[:10]
 
 
-
 if __name__ == "__main__":
     # vocabulary = LearnTransformVocabulary(
     #     json_data = "data/master_data.json"
     # )
-    recommender = Recommender(vectorizer_path="data/vectorizer.pkl", vocabulary_path="data/transformed_data.pkl")
+    recommender = Recommender(
+        vectorizer_path="data/vectorizer.pkl",
+        vocabulary_path="data/transformed_data.pkl",
+    )
     # recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model")
-    
+
     pdb.set_trace()
-
-
-
-
-
 
     # # Create a parser object
     # parser = argparse.ArgumentParser(

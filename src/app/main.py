@@ -1,4 +1,5 @@
 """Entry Point for the FastAPI App"""
+
 import os
 import json
 from pathlib import Path
@@ -13,11 +14,14 @@ from src.logics.arxiv_recommender import LearnTransformVocabulary, Recommender
 from src.logics import arxiv_search
 from src.app import schemas
 from src.logics.arxiv_recommender import LearnTransformVocabulary
+
 # import sys
 # sys.modules["__main__"].LearnTransformVocabulary = LearnTransformVocabulary
 
 
-recommender = Recommender(vocabulary_path="data/transformed_data.pkl", vectorizer_path="data/vectorizer.pkl")
+recommender = Recommender(
+    vocabulary_path="data/transformed_data.pkl", vectorizer_path="data/vectorizer.pkl"
+)
 search = arxiv_search.ArxivSearcher()
 
 BASE_PATH = Path(__file__).resolve().parent
@@ -26,21 +30,23 @@ print(f"BASE_PATH: {BASE_PATH}")
 app = FastAPI()
 
 # TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
-TEMPLATES = Jinja2Templates(directory=BASE_PATH/"../templates")
-app.mount("/static", StaticFiles(directory=BASE_PATH/"../static"), name="static")
+TEMPLATES = Jinja2Templates(directory=BASE_PATH / "../templates")
+app.mount("/static", StaticFiles(directory=BASE_PATH / "../static"), name="static")
 
 
 @app.get(path="/")
 def homepage(request: Request):
     return TEMPLATES.TemplateResponse(
-        name = "index.html", 
-        context = {"request": request, "name": "Subrata Mondal"}
+        name="index.html", context={"request": request, "name": "Subrata Mondal"}
     )
 
 
 # Define a route for searching documents
 @app.get("/search", response_model=List[schemas.SearchResult])
-def search_arxiv_papers(request:Request, query: str = Query(default="LLM, Attention, GPT", min_length=3, max_length=64)):
+def search_arxiv_papers(
+    request: Request,
+    query: str = Query(default="LLM, Attention, GPT", min_length=3, max_length=64),
+):
     """Search through the Arxiv API"""
     # Validate the input and perform the search
     try:
@@ -55,12 +61,7 @@ def search_arxiv_papers(request:Request, query: str = Query(default="LLM, Attent
     if results:
         results = json.loads(results)
         return TEMPLATES.TemplateResponse(
-            name="search.html",
-            context={
-                "request":request,
-                "results":results
-            }
-
+            name="search.html", context={"request": request, "results": results}
         )
         # return responses.JSONResponse(content=results, status_code=status.HTTP_200_OK)
     raise HTTPException(
@@ -70,11 +71,11 @@ def search_arxiv_papers(request:Request, query: str = Query(default="LLM, Attent
 
 # Define a route for getting recommendations
 @app.get("/recommend", response_model=List[schemas.Recommendation])
-def get_recommendations(request:Request, query: str = Query(default="LLM, Attention, GPT")):
+def get_recommendations(
+    request: Request, query: str = Query(default="LLM, Attention, GPT")
+):
     """Arxiv Research Paper Recommendation"""
-    vocabulary = LearnTransformVocabulary(
-        json_data = "../../data/master_data.json"
-    )
+    vocabulary = LearnTransformVocabulary(json_data="../../data/master_data.json")
     # Validate the input and generate recommendations
     try:
         # Perform recommendation
@@ -92,5 +93,6 @@ def get_recommendations(request:Request, query: str = Query(default="LLM, Attent
         content=recommendations, status_code=status.HTTP_200_OK
     )
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     pass
