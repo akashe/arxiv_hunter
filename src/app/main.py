@@ -1,14 +1,17 @@
 """Entry Point for the FastAPI App"""
 
-import os
 import json
 from pathlib import Path
-from typing import List, Optional
+from typing import List
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi import responses, status
 from fastapi.templating import Jinja2Templates
-import pandas as pd
 from fastapi.staticfiles import StaticFiles
+
+import fastapi as _fastapi
+import services as _services
+import schemas as _schemas
+import sqlalchemy.orm as _orm
 
 from src.logics.arxiv_recommender import LearnTransformVocabulary, Recommender
 from src.logics import arxiv_search
@@ -27,7 +30,8 @@ search = arxiv_search.ArxivSearcher()
 BASE_PATH = Path(__file__).resolve().parent
 print(f"BASE_PATH: {BASE_PATH}")
 
-app = FastAPI()
+app = _fastapi.FastAPI()
+_services.create_database()
 
 # TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
 TEMPLATES = Jinja2Templates(directory=BASE_PATH / "../templates")
@@ -40,37 +44,18 @@ def homepage(request: Request):
         name="index.html", context={"request": request, "name": "Subrata Mondal"}
     )
 
-
-# Define a route for searching documents
-@app.get("/search", response_model=List[schemas.SearchResult])
-def search_arxiv_papers(
-    request: Request,
-    query: str = Query(default="LLM, Attention, GPT", min_length=3, max_length=64),
-):
-    """Search through the Arxiv API"""
-    # Validate the input and perform the search
-    try:
-        # perform search
-        results = search.search(query=query, days=60, max_results=10)
-    except Exception as e:
-        # Return an error if something goes wrong
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
-        ) from e
-    # Return the results or an empty list if none are found
-    if results:
-        results = json.loads(results)
-        return TEMPLATES.TemplateResponse(
-            name="search.html", context={"request": request, "results": results}
+@app.post(path="/users/", response_model=_schemas.User)
+def create_user(user:_schemas.UserCreate, db:_orm.Session=_fastapi.Depends(_services.get_db)):
+    db_user = _services.get_user_by_email(db=db, email=user.email)
+    if db_user:
+        raise _fastapi.HTTPException(
+            status_code=_fastapi.status.HTTP_400_BAD_REQUEST,
+            detail="User already exists!!!"
         )
-        # return responses.JSONResponse(content=results, status_code=status.HTTP_200_OK)
-    raise HTTPException(
-        status_code=status.HTTP_400_BAD_REQUEST, detail="No results found"
-    )
-
+    return _services.create_user(db=db, user=user)
 
 # Define a route for getting recommendations
-@app.get("/recommend", response_model=List[schemas.Recommendation])
+@app.get("/recommend", response_model=List[schemas.RecommendedPaper])
 def get_recommendations(
     request: Request, query: str = Query(default="LLM, Attention, GPT")
 ):
