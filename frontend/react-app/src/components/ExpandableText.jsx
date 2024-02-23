@@ -1,6 +1,6 @@
 import { useState } from "react";
 function ExpandableText() {
-  const [isClamped, setIsClamped] = useState("true"); // Initial state is clamped
+  const [isClamped, setIsClamped] = useState(true); // Initial state is clamped
   const handleClick = () => {
     setIsClamped(!isClamped); // Toggle on button click
   };

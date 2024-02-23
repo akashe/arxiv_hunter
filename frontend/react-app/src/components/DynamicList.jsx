@@ -13,12 +13,12 @@ function Main() {
     fetchUsers();
   }, []);
   return (
-    <main className="min-h-screen flex flex-col flex-grow my-24">
+    <main className="min-h-screen flex flex-col flex-grow my-32">
       {users.map((user) => {
         return (
           <div
             key={user?.id}
-            className="text-slate-800 mt-4 p-4 bg-gradient-to-r from-slate-50 to bg-slate-100 border-slate-100 rounded-md shadow-md">
+            className="text-center text-slate-800 mt-4 p-4 bg-gradient-to-r from-slate-50 to bg-slate-100 border-slate-100 rounded-md shadow-md">
             <p className="mb-4 text-2xl font-semibold text-slate-900">
               {user?.id}An Important Alert
             </p>
