@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import ExpandableText from "./ExpandableText";
+import Accordion from "./Accordion";
 function Main() {
   const [users, setUsers] = useState([]);
   async function fetchUsers() {

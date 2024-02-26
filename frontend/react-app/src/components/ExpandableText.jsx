@@ -5,12 +5,9 @@ function ExpandableText() {
     setIsClamped(!isClamped); // Toggle on button click
   };
 
-  const clampValue = isClamped ? "3" : "none"; // Dynamically calculate the clamp value
-  const moreLess = clampValue === "3" ? "...more" : "...less";
-
   return (
-    <div>
-      <p className={`lg:line-clamp-${clampValue}`}>
+    <>
+      <p className={`${isClamped ? "line-clamp-3" : "lg:line-clamp-none"}`}>
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Architecto
         laborum veniam accusantium cum error magnam nesciunt vel assumenda!
         Necessitatibus, modi illum. Aliquam iure pariatur dolorem error. Est
@@ -25,10 +22,10 @@ function ExpandableText() {
       </p>
       <button
         onClick={handleClick}
-        className="font-semibold text-blue-600">
-        {moreLess}
+        className="text-2xl font-bold text-blue-600">
+        {isClamped ? "+" : "-"}
       </button>
-    </div>
+    </>
   );
 }
 export default ExpandableText;
