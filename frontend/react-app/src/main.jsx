@@ -5,6 +5,7 @@ import './index.css'
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginSignup from "./pages/LoginSignup.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
+import Form from "./pages/Form.jsx";
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,11 @@ const router = createBrowserRouter([
   {
     path: "/auth",
     element: <LoginSignup></LoginSignup>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
+  {
+    path: "/form",
+    element: <Form></Form>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
 ]);
