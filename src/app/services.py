@@ -6,9 +6,9 @@ and acts as a middleman between your API and the database.
 import sqlalchemy.orm as _orm
 from passlib.context import CryptContext
 
-import database as _database
-import models as _models
-import schemas as _schemas
+from . import database as _database
+from . import models as _models
+from . import schemas as _schemas
 
 
 def create_database():

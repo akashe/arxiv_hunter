@@ -96,7 +96,7 @@ class Recommender:
             list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x: x[1]
         )
         # return the top 10 results
-        return result[:10]
+        return result
 
 
 if __name__ == "__main__":
