@@ -1,14 +1,34 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  firstname: z.string().min(3),
+  lastname: z.string().min(3),
+  email: z.string().email(),
+  password: z.string().min(8),
+});
 
 function LoginSignup() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => {
-    console.log(data);
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    resolver: zodResolver(schema),
+  });
+  const onSubmit = async (data) => {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      console.log(data);
+      throw new Error();
+    } catch (error) {
+      setError("root", {
+        message: "This email is already in use.",
+      });
+    }
   };
   const [action, setAction] = useState("Sign Up");
   const loginMsg = "Welcome back";
@@ -18,10 +38,7 @@ function LoginSignup() {
   const displayFullName = (
     <div className="flex flex-col">
       <input
-        {...register("firstname", {
-          required: "Firstname is required, length > 2",
-          minLength: 3,
-        })}
+        {...register("firstname")}
         type="text"
         placeholder="first name"
         className={inputBar}
@@ -30,10 +47,7 @@ function LoginSignup() {
         <div className="text-red-500">{errors.firstname.message}</div>
       )}
       <input
-        {...register("lastname", {
-          required: "Lastname is required, length > 2",
-          minLength: 3,
-        })}
+        {...register("lastname")}
         type="text"
         placeholder="last name"
         className={inputBar}
@@ -81,11 +95,7 @@ function LoginSignup() {
               </div>
               {action === "Sign Up" && displayFullName}
               <input
-                {...register("email", {
-                  required: "Email is required, length > 2",
-                  minLength: 3,
-                  validate: (value) => value.includes("@"),
-                })}
+                {...register("email")}
                 type="text"
                 placeholder="email"
                 className={inputBar}
@@ -94,10 +104,7 @@ function LoginSignup() {
                 <div className="text-red-500">{errors.email.message}</div>
               )}
               <input
-                {...register("password", {
-                  required: "Password is required, length > 7",
-                  minLength: 8,
-                })}
+                {...register("password")}
                 type="text"
                 placeholder="password"
                 className={inputBar}
@@ -108,9 +115,14 @@ function LoginSignup() {
               {action === "Log In" && loginInfo}
               {action === "Sign Up" && signupInfo}
 
-              <button className="p-4 my-2 rounded-full bg-blue-600 hover:bg-blue-700 hover:shadow-md text-xl  font-bold text-white">
-                {action}
+              <button
+                disabled={isSubmitting}
+                className="p-4 my-2 rounded-full bg-blue-600 hover:bg-blue-700 hover:shadow-md text-xl  font-bold text-white">
+                {isSubmitting ? "Loading..." : action}
               </button>
+              {errors.root && (
+                <div className="text-red-500">{errors.root.message}</div>
+              )}
             </div>
           </div>
         </div>
