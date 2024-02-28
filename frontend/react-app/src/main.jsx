@@ -1,11 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
+import React from "react";
+import { createRoot } from "react-dom/client";
+import { Auth0Provider } from "@auth0/auth0-react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import LoginSignup from "./pages/LoginSignup.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import Form from "./pages/Form.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,10 +26,20 @@ const router = createBrowserRouter([
     element: <Form></Form>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
+  {
+    path: "/profile",
+    element: <UserProfile></UserProfile>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  <Auth0Provider
+    domain="dev-k4ingp74nidufnz0.us.auth0.com"
+    clientId="CtaOxr1hesPZIjzCnnLgDCbLh3CNbaPX"
+    authorizationParams={{
+      redirect_uri: window.location.origin,
+    }}>
     <RouterProvider router={router}></RouterProvider>
-  </React.StrictMode>
+  </Auth0Provider>
 );
