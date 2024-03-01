@@ -6,6 +6,9 @@ import LoginSignup from "./pages/LoginSignup.jsx";
 import NotFoundPage from "./pages/NotFoundPage.jsx";
 import Form from "./pages/Form.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
+import Register from "./components/Register.jsx";
+import TestRegister from "./components/TestRegister.jsx";
+import Login from "./components/Login.jsx";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +29,21 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <UserProfile></UserProfile>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
+  {
+    path: "/register",
+    element: <Register></Register>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
+  {
+    path: "/testregister",
+    element: <TestRegister></TestRegister>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
+  {
+    path: "/login",
+    element: <Login></Login>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
 ]);

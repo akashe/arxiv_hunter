@@ -1,9 +1,8 @@
 """Entry Point for the FastAPI App"""
 
-import json
 from pathlib import Path
 from typing import List
-from fastapi import FastAPI, HTTPException, Query, Request
+from fastapi import FastAPI, HTTPException, Query, Request, Depends
 from fastapi import responses, status
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -14,6 +13,11 @@ import fastapi as _fastapi
 from . import services as _services
 from . import schemas as _schemas
 import sqlalchemy.orm as _orm
+from .auth import auth
+from .endpoints.user_endpoints import user_router
+from .models.user_models import *
+
+from .db.db import create_db_and_tables
 
 from src.logics.arxiv_recommender import LearnTransformVocabulary, Recommender
 from src.logics import arxiv_search
@@ -33,6 +37,8 @@ BASE_PATH = Path(__file__).resolve().parent
 print(f"BASE_PATH: {BASE_PATH}")
 
 app = _fastapi.FastAPI()
+auth_handler = auth.AuthHandler()
+create_db_and_tables()
 
 origins = [
     "http://localhost:8080",
@@ -46,7 +52,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-_services.create_database()
 
 # TEMPLATES = Jinja2Templates(directory=str(BASE_PATH / "../templates"))
 TEMPLATES = Jinja2Templates(directory=BASE_PATH / "../templates")
@@ -54,23 +59,13 @@ app.mount("/static", StaticFiles(directory=BASE_PATH / "../static"), name="stati
 
 
 @app.get(path="/")
-def homepage(request: Request):
+def homepage(request: Request, user=Depends(auth_handler.auth_wrapper)):
     return TEMPLATES.TemplateResponse(
         name="index.html", context={"request": request, "name": "Subrata Mondal"}
     )
 
-@app.post(path="/users/", response_model=_schemas.User)
-def create_user(user:_schemas.UserCreate, db:_orm.Session=_fastapi.Depends(_services.get_db)):
-    db_user = _services.get_user_by_email(db=db, email=user.email)
-    if db_user:
-        raise _fastapi.HTTPException(
-            status_code=_fastapi.status.HTTP_400_BAD_REQUEST,
-            detail="User already exists!!!"
-        )
-    return _services.create_user(db=db, user=user)
-
 @app.get("/recommend", response_model=List[schemas.RecommendedPaper])
-def get_recommendations(query: str = Query(default="LLM, Attention, GPT")):
+def get_recommendations(query: str = Query(default="LLM, Attention, GPT"), user=Depends(auth_handler.auth_wrapper)):
     """Arxiv Research Paper Recommendation"""
     try:
         # Perform validation and recommendation steps (refer to previous responses for details)
@@ -90,31 +85,5 @@ def get_recommendations(query: str = Query(default="LLM, Attention, GPT")):
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
         ) from e
-    
-# Define a route for getting recommendations
-# @app.get("/recommend", response_model=List[schemas.RecommendedPaper])
-# def get_recommendations(
-#     request: Request, query: str = Query(default="LLM, Attention, GPT")
-# ):
-#     """Arxiv Research Paper Recommendation"""
-#     vocabulary = LearnTransformVocabulary(json_data="../../data/master_data.json")
-#     # Validate the input and generate recommendations
-#     try:
-#         # Perform recommendation
-#         recommendations = recommender.recommend(query=query)
-#         df = pd.read_json("data/master_data.json")
-#         indexes = [index for index, _ in recommendations]
-#         result = df.loc[indexes]
-#     except Exception as e:
-#         # Return an error if something goes wrong
-#         raise HTTPException(
-#             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
-#         ) from e
-#     # Return the recommendations
-#     return responses.JSONResponse(
-#         content=result.to_json(), status_code=status.HTTP_200_OK
-#     )
 
-
-if __name__ == "__main__":
-    pass
+app.include_router(router=user_router)
