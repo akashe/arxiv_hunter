@@ -32,6 +32,7 @@ alembic = "^1.13.1"
 python-jose = "^3.3.0"
 pyjwt = "^2.8.0"
 bcrypt = "^4.1.2"
+schedule = "^1.2.1"
 
 
 [build-system]

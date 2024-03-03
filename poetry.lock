@@ -1506,6 +1506,17 @@ files = [
 pyasn1 = ">=0.1.3"
 
 [[package]]
+name = "schedule"
+version = "1.2.1"
+description = "Job scheduling for humans."
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "schedule-1.2.1-py2.py3-none-any.whl", hash = "sha256:14cdeb083a596aa1de6dc77639a1b2ac8bf6eaafa82b1c9279d3612823063d01"},
+    {file = "schedule-1.2.1.tar.gz", hash = "sha256:843bc0538b99c93f02b8b50e3e39886c06f2d003b24f48e1aa4cadfa3f341279"},
+]
+
+[[package]]
 name = "scikit-learn"
 version = "1.4.0"
 description = "A set of python modules for machine learning and data mining"
@@ -1862,4 +1873,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "81a8659f0ac66f373a3cd6fb13206fa7b5b882a9a22c1494935dc8212c82b370"
+content-hash = "4e2b491eedc26aedd9a2aee803d805c2d060c17073a374b97e4ec99c990f240d"
