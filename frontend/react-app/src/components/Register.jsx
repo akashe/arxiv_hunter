@@ -3,53 +3,29 @@ import { Link } from "react-router-dom";
 import Choice from "./Choice";
 
 function Register() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [password2, setPassword2] = useState("");
+  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isML, setIsML] = useState(false);
+  const [isCV, setIsCV] = useState(false);
+  const [isNLP, setIsNLP] = useState(false);
+  const [isLLM, setIsLLM] = useState(false);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    // Validate form data (optional, but recommended)
-    if (!username || !password || !password2 || !email) {
-      setMessage("Please fill in all required fields.");
-      return;
-    }
-
-    if (password !== password2) {
-      setMessage("Passwords do not match.");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/register", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-          password2, // Assuming your backend requires password2 for registration
-          email,
-        }),
-      });
-
-      if (!response.ok) {
-        setMessage("Registration failed. Please try again.");
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setMessage(data.message || "Registration successful!"); // Handle success message (if applicable)
-    } catch (error) {
-      console.error("Error:", error);
-      setMessage("An error occurred. Please try again later.");
-    }
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log(email, password, confirmPassword);
+    console.log(isML && "ML", isCV && "CV", isNLP && "NLP", isLLM && "LLM");
+    // Setting state to empty or false to clear out the form entries after submitting
+    setFullname("");
+    setEmail("");
+    setPassword("");
+    setConfirmPassword("");
+    setIsML(false);
+    setIsCV(false);
+    setIsNLP(false);
+    setIsLLM(false);
+  }
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
       <form onSubmit={handleSubmit}>
@@ -85,12 +61,12 @@ function Register() {
                 />
               </svg>
               <input
-                id="username"
+                id="fullname"
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="Full Name"
                 type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={fullname}
+                onChange={(e) => setFullname(e.target.value)}
                 required
               />
             </div>
@@ -126,7 +102,7 @@ function Register() {
                 />
               </svg>
               <input
-                id="password1"
+                id="password"
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="Password"
                 type="password"
@@ -148,12 +124,12 @@ function Register() {
                 />
               </svg>
               <input
-                id="password2"
+                id="confirmPassword"
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="Confirm Password"
                 type="password"
-                value={password2}
-                onChange={(e) => setPassword2(e.target.value)}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
                 required
               />
             </div>
@@ -162,10 +138,22 @@ function Register() {
             </p>
             <div className="border-b-2 py-2">
               <div className="flex justify-between items-center">
-                <Choice name="ML"></Choice>
-                <Choice name="CV"></Choice>
-                <Choice name="NLP"></Choice>
-                <Choice name="LLM"></Choice>
+                <Choice
+                  isChecked={isML}
+                  setChoiceState={setIsML}
+                  name="ML"></Choice>
+                <Choice
+                  isChecked={isCV}
+                  setChoiceState={setIsCV}
+                  name="CV"></Choice>
+                <Choice
+                  isChecked={isNLP}
+                  setChoiceState={setIsNLP}
+                  name="NLP"></Choice>
+                <Choice
+                  isChecked={isLLM}
+                  setChoiceState={setIsLLM}
+                  name="LLM"></Choice>
               </div>
             </div>
             <div>
@@ -182,9 +170,6 @@ function Register() {
                 Register
               </button>
             </div>
-          </div>
-          <div className="text-sm text-slate-500 py-2 text-center">
-            {message && <p>{message}</p>}
           </div>
         </div>
       </form>

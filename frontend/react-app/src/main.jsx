@@ -9,6 +9,13 @@ import UserProfile from "./pages/UserProfile.jsx";
 import Register from "./components/Register.jsx";
 import TestRegister from "./components/TestRegister.jsx";
 import Login from "./components/Login.jsx";
+import DashBoard from "./dashboard/DashBoard.jsx";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/ReactToastify.min.css";
+import { Auth0Provider } from "@auth0/auth0-react";
+
+const domain = import.meta.env.REACT_APP_AUTH0_DOMAIN;
+const clientId = import.meta.env.REACT_APP_AUTH0_CLIENT_ID;
 
 const router = createBrowserRouter([
   {
@@ -46,8 +53,19 @@ const router = createBrowserRouter([
     element: <Login></Login>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
+  {
+    path: "/dashboard",
+    element: <DashBoard></DashBoard>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router}></RouterProvider>
+  <Auth0Provider
+    domain={domain}
+    clientId={clientId}
+    redirectUri={window.location.origin}>
+    <ToastContainer />
+    <RouterProvider router={router}></RouterProvider>
+  </Auth0Provider>
 );

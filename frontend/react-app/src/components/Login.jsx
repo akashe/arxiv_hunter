@@ -1,46 +1,19 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import Choice from "./Choice";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { toast } from "react-toastify";
 
-function Login({ onLoginSuccess }) {
-  const [username, setUsername] = useState("");
+function Login() {
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [message, setMessage] = useState("");
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!username || !password) {
-      setMessage("Please fill in all required fields.");
-      return;
-    }
-
-    try {
-      const response = await fetch("http://127.0.0.1:8000/login", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-      });
-
-      if (!response.ok) {
-        setMessage("Invalid username or password.");
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      setMessage(data.message || "Login successful!");
-      onLoginSuccess(data.token); // Pass token to parent component
-    } catch (error) {
-      console.error("Error:", error);
-      setMessage("An error occurred. Please try again later.");
-    }
-  };
+  function handleSubmit(e) {
+    e.preventDefault();
+    console.log("Thanks for Submitting Login Info");
+    console.log(email, password);
+    // Setting state to empty to clear out the form entries after submitting
+    setEmail("");
+    setPassword("");
+  }
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
       <form onSubmit={handleSubmit}>
@@ -77,8 +50,8 @@ function Login({ onLoginSuccess }) {
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="example@gmail.com"
                 type="email"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
@@ -95,7 +68,7 @@ function Login({ onLoginSuccess }) {
                 />
               </svg>
               <input
-                id="password1"
+                id="password"
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="Password"
                 type="password"
@@ -118,9 +91,6 @@ function Login({ onLoginSuccess }) {
                 Log In
               </button>
             </div>
-          </div>
-          <div className="text-sm text-slate-500 py-2 text-center">
-            {message && <p>{message}</p>}
           </div>
         </div>
       </form>
