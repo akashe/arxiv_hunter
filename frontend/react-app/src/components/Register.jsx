@@ -1,9 +1,18 @@
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Choice from "./Choice";
+import axios from "axios";
+
+// Regular Expressions for User
+const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+// Regular Expressions for Password
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
+const REGISTER_URL = "/register";
 
 function Register() {
-  const [fullname, setFullname] = useState("");
+  const userRef = useRef(); // for user input
+  const errRef = useRef(); // for error
+  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -12,12 +21,36 @@ function Register() {
   const [isNLP, setIsNLP] = useState(false);
   const [isLLM, setIsLLM] = useState(false);
 
-  function handleSubmit(e) {
+  const [errMsg, setErrMsg] = useState("");
+  const [success, setSuccess] = useState(false);
+
+  async function handleSubmit(e) {
     e.preventDefault();
     console.log(email, password, confirmPassword);
     console.log(isML && "ML", isCV && "CV", isNLP && "NLP", isLLM && "LLM");
+
+    try {
+      const response = await axios.post("", JSON.stringify({ username, password, password2: confirmPassword, email }), {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      });
+      console.log(username, password);
+      console.log(response?.data);
+      console.log(response?.accessToken);
+      console.log(JSON.stringify(response));
+    } catch (err) {
+      if (!err?.response) {
+        setErrMsg("No Server Response");
+      } else if (err.response?.status === 409) {
+        setErrMsg("Username Taken");
+      } else {
+        setErrMsg("Registration Failed");
+      }
+      errRef.current.focus();
+    }
+
     // Setting state to empty or false to clear out the form entries after submitting
-    setFullname("");
+    setUsername("");
     setEmail("");
     setPassword("");
     setConfirmPassword("");
@@ -41,12 +74,8 @@ function Register() {
               <path d="M4.462 19.462c.42-.419.753-.89 1-1.395.453.214.902.435 1.347.662a6.742 6.742 0 0 1-1.286 1.794.75.75 0 0 1-1.06-1.06Z" />
             </svg>
           </div>
-          <h1 className="text-2xl font-semibold text-black text-center">
-            {`Let's create your account`}
-          </h1>
-          <p className="text-sm text-center text-slate-500">
-            Please provide your details
-          </p>
+          <h1 className="text-2xl font-semibold text-black text-center">{`Let's create your account`}</h1>
+          <p className="text-sm text-center text-slate-500">Please provide your details</p>
           <div className="p-4 my-4 rounded-md bg-slate-100 shadow-md border-black ">
             <div className="flex justify-start items-center pb-2">
               <svg
@@ -61,12 +90,12 @@ function Register() {
                 />
               </svg>
               <input
-                id="fullname"
+                id="username"
                 className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
                 placeholder="Full Name"
                 type="text"
-                value={fullname}
-                onChange={(e) => setFullname(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
@@ -133,9 +162,7 @@ function Register() {
                 required
               />
             </div>
-            <p className="text-sm border-b-2 py-2 text-slate-700">
-              Select your preferences
-            </p>
+            <p className="text-sm border-b-2 py-2 text-slate-700">Select your preferences</p>
             <div className="border-b-2 py-2">
               <div className="flex justify-between items-center">
                 <Choice
@@ -158,9 +185,7 @@ function Register() {
             </div>
             <div>
               <Link to={"/login"}>
-                <p className="text-sm text-slate-500 text-center py-2">
-                  Already a user? Login instead
-                </p>
+                <p className="text-sm text-slate-500 text-center py-2">Already a user? Login instead</p>
               </Link>
             </div>
             <div className="flex justify-center items-center">

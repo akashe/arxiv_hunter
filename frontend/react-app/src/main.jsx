@@ -13,6 +13,10 @@ import DashBoard from "./dashboard/DashBoard.jsx";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/ReactToastify.min.css";
 import { Auth0Provider } from "@auth0/auth0-react";
+import RegisterPage from "./pages/RegisterPage.jsx";
+import LoginPage from "./components/LoginPage.jsx";
+import AuthProvider from "./provider/authProvider.jsx";
+import Routes from "./routes/index.jsx";
 
 const domain = import.meta.env.REACT_APP_AUTH0_DOMAIN;
 const clientId = import.meta.env.REACT_APP_AUTH0_CLIENT_ID;
@@ -40,7 +44,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <Register></Register>,
+    element: <RegisterPage></RegisterPage>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
@@ -50,7 +54,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login></Login>,
+    element: <LoginPage></LoginPage>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
@@ -61,11 +65,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Auth0Provider
-    domain={domain}
-    clientId={clientId}
-    redirectUri={window.location.origin}>
-    <ToastContainer />
-    <RouterProvider router={router}></RouterProvider>
-  </Auth0Provider>
+  <AuthProvider>
+    <Routes />
+  </AuthProvider>
 );
+
+
