@@ -3,32 +3,41 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import ExpandableText from "./ExpandableText";
 function Main() {
-  const [users, setUsers] = useState([]);
+  const [arxivData, setArxivData] = useState([]);
   async function fetchUsers() {
-    const { data } = await axios.get(
-      "http://127.0.0.1:8000/recommend?query=LLM%2C%20Attention%2C%20GPT"
-    );
-    setUsers(data);
+    try {
+      const { data } = await axios.get("http://127.0.0.1:8000/recommend", {
+        params: {
+          query: "LLM, Attention, GPT",
+        },
+        headers: {
+          Accept: "application/json",
+          Authorization: `Bearer ${localStorage.getItem("appToken")}`,
+        },
+      });
+      console.log(data);
+      setArxivData(data);
+    } catch (error) {
+      console.error(error);
+    }
   }
   useEffect(() => {
     fetchUsers();
   }, []);
   return (
     <main className="min-h-screen flex flex-col flex-grow my-32">
-      {users.map((user) => {
+      {arxivData.map((data) => {
         return (
           <div
-            key={user?.id}
+            key={data?.id}
             className="text-center text-slate-800 mt-4 p-4 bg-gradient-to-r from-slate-50 to bg-slate-100 border-slate-100 rounded-md shadow-md">
-            <p className="mb-4 text-xl font-bold text-slate-900">
-              {user?.title}
-            </p>
+            <p className="mb-4 text-xl font-bold text-slate-900">{data?.title}</p>
             <p className="text-sm text-slate-800 mb-4">
-              <ExpandableText title={user?.summary}></ExpandableText>
+              <ExpandableText title={data?.summary}></ExpandableText>
             </p>
             <div className="flex justify-center">
               <Link
-                to={user?.id}
+                to={data?.id}
                 target="_blank">
                 <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
                   <svg
@@ -47,7 +56,7 @@ function Main() {
                 </button>
               </Link>
               <Link
-                to={user?.pdf_link}
+                to={data?.pdf_link}
                 target="_blank">
                 <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
                   <svg

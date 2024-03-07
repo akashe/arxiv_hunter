@@ -37,6 +37,8 @@ const LoginPage = () => {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       });
+      localStorage.setItem("appToken", response.data.token);
+      console.log(localStorage.getItem("appToken"));
       console.log(JSON.stringify(response?.data));
       //console.log(JSON.stringify(response));
       const accessToken = response?.data?.accessToken;
