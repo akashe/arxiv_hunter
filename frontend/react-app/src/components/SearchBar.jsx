@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios"; // Import axios or any other library you're using for API requests
 
-function SearchBar() {
+function SearchBar({ setSearchResults }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [arxivData, setArxivData] = useState([]);
 
@@ -20,6 +20,7 @@ function SearchBar() {
       });
       console.log(data);
       setArxivData(data);
+      setSearchResults(data);
     } catch (error) {
       console.error(error);
     }
