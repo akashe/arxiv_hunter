@@ -18,9 +18,6 @@ import LoginPage from "./components/LoginPage.jsx";
 import AuthProvider from "./provider/authProvider.jsx";
 import Routes from "./routes/index.jsx";
 
-const domain = import.meta.env.REACT_APP_AUTH0_DOMAIN;
-const clientId = import.meta.env.REACT_APP_AUTH0_CLIENT_ID;
-
 const router = createBrowserRouter([
   {
     path: "/",
@@ -64,10 +61,6 @@ const router = createBrowserRouter([
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <AuthProvider>
-    <Routes />
-  </AuthProvider>
-);
+ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router}></RouterProvider>);
 
 

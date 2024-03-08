@@ -26,7 +26,7 @@ body {
   padding: 1rem 0.5rem;
 }
 
-#login-section {
+/* #login-section {
     width: 100%;
     max-width: 420px;
     min-height: 400px;
@@ -34,8 +34,7 @@ body {
     flex-direction: column;
     justify-content: flex-start;
     padding: 1rem;
-    background-color: rgba(0,0,0,0.4);
-}
+} */
 
 .login-form {
     display: flex;
@@ -79,8 +78,8 @@ li {
 
 .instructions {
     font-size: 0.75rem;
-    border-radius: 0.5rem;
-    background: #6f2525;
+    border-radius: 10px;
+    background: #f14343;
     color: #fff;
     padding: 0.25rem;
     position: relative;
@@ -112,6 +111,8 @@ li {
 
 .errmsg {
     background-color: lightpink;
+    border-radius: 10px;
+    text-align: center;
     color: firebrick;
     font-weight: bold;
     padding: 0.5rem;
