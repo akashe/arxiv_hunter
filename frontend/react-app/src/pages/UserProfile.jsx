@@ -15,9 +15,7 @@ function UserProfile() {
             />
           </svg>
         </div>
-        <h1 className="text-xl font-semibold text-black text-center">
-          Subrata Mondal
-        </h1>
+        <h1 className="text-xl font-semibold text-black text-center">Arxiv Hunter</h1>
         <div className="p-4 my-4 rounded-md bg-slate-100 shadow-md border-black ">
           <div className="flex justify-start items-center border-b-2 pb-2">
             <svg
@@ -28,7 +26,7 @@ function UserProfile() {
               <path d="M1.5 8.67v8.58a3 3 0 0 0 3 3h15a3 3 0 0 0 3-3V8.67l-8.928 5.493a3 3 0 0 1-3.144 0L1.5 8.67Z" />
               <path d="M22.5 6.908V6.75a3 3 0 0 0-3-3h-15a3 3 0 0 0-3 3v.158l9.714 5.978a1.5 1.5 0 0 0 1.572 0L22.5 6.908Z" />
             </svg>
-            <p className="m-2">subratasubha2@gmail.com</p>
+            <p className="m-2">{localStorage.getItem("userEmail")}</p>
           </div>
           <p className="border-b-2 py-2">Your Preferences</p>
           <div className="border-b-2 py-2">
@@ -69,9 +67,7 @@ function UserProfile() {
           </div>
         </div>
         <div className="flex justify-center items-center">
-          <button className="px-4 py-2 bg-black text-white font-bold rounded-full">
-            Logout
-          </button>
+          <button className="px-4 py-2 bg-black text-white font-bold rounded-full">Logout</button>
         </div>
       </div>
     </div>

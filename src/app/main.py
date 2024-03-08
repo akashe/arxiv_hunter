@@ -64,7 +64,7 @@ def homepage(request: Request, user=Depends(auth_handler.auth_wrapper)):
         name="index.html", context={"request": request, "name": "Subrata Mondal"}
     )
 
-@app.get("/recommend", response_model=List[schemas.RecommendedPaper])
+@app.get(path="/recommend", response_model=List[schemas.RecommendedPaper])
 def get_recommendations(query: str = Query(default="LLM, Attention, GPT"), user=Depends(auth_handler.auth_wrapper)):
     """Arxiv Research Paper Recommendation"""
     try:

@@ -37,6 +37,13 @@ const handleSubmit = async (e) => {
       withCredentials: true,
     });
     localStorage.setItem("appToken", response.data.token);
+    localStorage.setItem("userEmail", response.data.username);
+    // const extractDisplayName = (email) => {
+    //   const indexOfAt = email.indexOf("@");
+    //   const displayName = email.slice(0, indexOfAt);
+    //   return displayName;
+    // };
+    // localStorage.setItem("displayName", extractDisplayName(response.data.username));
     console.log(localStorage.getItem("appToken"));
     console.log(JSON.stringify(response?.data));
     // const accessToken = response?.data?.accessToken;
