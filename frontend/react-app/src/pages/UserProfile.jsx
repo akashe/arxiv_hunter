@@ -1,4 +1,18 @@
+import { useNavigate } from "react-router-dom";
+
+const useLogout = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    localStorage.removeItem("appToken");
+    navigate("/login");
+  };
+
+  return handleLogout;
+};
+
 function UserProfile() {
+  const handleLogout = useLogout();
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
       <div className="bg-slate-50 shadow-md rounded-lg p-4">
@@ -67,7 +81,11 @@ function UserProfile() {
           </div>
         </div>
         <div className="flex justify-center items-center">
-          <button className="px-4 py-2 bg-black text-white font-bold rounded-full">Logout</button>
+          <button
+            onClick={handleLogout}
+            className="px-4 py-2 bg-black text-white font-bold rounded-full">
+            Logout
+          </button>
         </div>
       </div>
     </div>

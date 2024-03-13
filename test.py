@@ -1,4 +1,4 @@
 import pandas as pd
-df = pd.read_json("./data/master_data.json")
+df = pd.read_pickle("data/master_data3.pkl")
 print(df.shape)
-print(df.title.tail(20).iloc[5])
+print(df.head(20))

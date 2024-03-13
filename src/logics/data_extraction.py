@@ -126,9 +126,9 @@ class ArxivParser:
 
     def store_data(
         self,
-        save_file_name: str = "master_data.pkl",
-        max_results: int = 10,
-        days: int = 60,
+        save_file_name: str = "master_data3.pkl",
+        max_results: int = 500,
+        days: int = 365*2,
     ) -> None:
         # Call the get_results method and store the dataframe in the self.extracted_data attribute
         self.extracted_data = self.get_results(max_results, days)
@@ -165,7 +165,7 @@ if __name__ == "__main__":
         type=str,
         help="Maximum results to store",
         nargs="?",
-        default=50,
+        default=500,
     )
     parser.add_argument(
         "-d",
@@ -173,7 +173,7 @@ if __name__ == "__main__":
         type=str,
         help="Store only for these many past days",
         nargs="?",
-        default=50,
+        default=365*2,
     )
 
     # Parse the arguments
