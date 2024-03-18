@@ -3,10 +3,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
 import "./index.css"
 import App from "./App.jsx"
-import NotFoundPage from "./pages/NotFoundPage.jsx"
-import UserProfile from "./pages/UserProfile.jsx"
-import RegisterPage from "./pages/RegisterPage.jsx"
-import LoginPage from "./components/LoginPage.jsx"
+import NotFoundPage from "./ui/NotFoundPage.jsx"
+import UserProfile from "./user/UserProfile.jsx"
+import RegisterPage from "./auth/RegisterPage.jsx"
+import LoginPage from "./auth/LoginPage.jsx"
 
 const token = localStorage.getItem("appToken")
 
@@ -17,18 +17,18 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
+    path: "/login",
+    element: <LoginPage></LoginPage>,
+    errorElement: <NotFoundPage></NotFoundPage>,
+  },
+  {
     path: "/profile",
-    element: <UserProfile></UserProfile>,
+    element: <UserProfile loggedIn={token ? true : false}></UserProfile>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
     path: "/register",
     element: <RegisterPage></RegisterPage>,
-    errorElement: <NotFoundPage></NotFoundPage>,
-  },
-  {
-    path: "/login",
-    element: <LoginPage></LoginPage>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
 ])

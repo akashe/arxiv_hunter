@@ -1,8 +1,9 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { useAuth } from "../provider/authProvider";
 import { ProtectedRoute } from "./ProtectedRoute"
+
 import Logout from "../pages/Logout"
-import Register from "../pages/RegisterPage"
+import RegisterPage from "../pages/RegisterPage"
 import LoginPage from "../components/LoginPage"
 import App from "../App"
 
@@ -13,7 +14,7 @@ const Routes = () => {
   const routesForPublic = [
     {
       path: "/register",
-      element: <Register></Register>,
+      element: <RegisterPage></RegisterPage>,
     },
     {
       path: "/login",

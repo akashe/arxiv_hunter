@@ -1,21 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
-
-/* * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    font-family: 'Nunito', sans-serif;
-    font-size: 22px;
-    color: #fff;
-}
-
-body {
-    min-height: 100vh;
-    background-color: dodgerblue;
-} */
     
 .App {
   display: flex;
@@ -25,16 +8,6 @@ body {
   min-height: 100vh; 
   padding: 1rem 0.5rem;
 }
-
-/* #login-section {
-    width: 100%;
-    max-width: 420px;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
-} */
 
 .login-form {
     display: flex;
@@ -47,16 +20,6 @@ body {
 a, a:visited {
     color: #fff;
 }
-
-/* input[type="text"],
-input[type="password"],
-button,
-textarea {
-  font-family: 'Nunito', sans-serif;
-  font-size: 22px;
-  padding: 0.25rem;
-  border-radius: 0.5rem;
-} */
 
 button {
   margin-top: 1rem;

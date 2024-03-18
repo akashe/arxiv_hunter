@@ -7,11 +7,11 @@ function Header() {
       <div className="hidden lg:block flex-grow"></div>
       <Link
         to={"/profile"}
-        className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 hover:bg-slate-300 flex justify-center items-center">
+        className="text-xl font-bold text-center bg-orange-300 rounded-full h-10 w-10 hover:bg-slate-400 flex justify-center items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
-          fill="currentColor"
+          fill="black"
           className="w-6 h-6">
           <path
             fillRule="evenodd"
@@ -21,7 +21,7 @@ function Header() {
         </svg>
       </Link>
     </header>
-  );
+  )
 }
 
 export default Header;

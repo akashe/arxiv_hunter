@@ -1,22 +1,24 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import Choice from "../components/Choice"
 
 const useLogout = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   const handleLogout = async () => {
-    localStorage.removeItem("appToken");
-    navigate("/login");
-  };
+    localStorage.removeItem("appToken")
+    navigate("/login")
+  }
 
-  return handleLogout;
-};
+  return handleLogout
+}
 
 function UserProfile() {
-  const handleLogout = useLogout();
+  const handleLogout = useLogout()
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
-      <div className="bg-slate-50 shadow-md rounded-lg p-4">
-        <div className="flex justify-center items-center">
+      <div className="bg-slate-50 shadow-md rounded-lg p-14">
+        <div className="flex justify-center items-center p-4">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -43,40 +45,31 @@ function UserProfile() {
             <p className="m-2">{localStorage.getItem("userEmail")}</p>
           </div>
           <p className="border-b-2 py-2">Your Preferences</p>
-          <div className="border-b-2 py-2">
-            <div className="flex justify-between items-center">
-              <div>
-                <input
-                  id="ml"
-                  type="checkbox"
-                  className="default:ring-2 mr-2"
-                />
-                <label htmlFor="ml">ML</label>
-              </div>
-              <div>
-                <input
-                  id="cv"
-                  type="checkbox"
-                  className="default:ring-2 mr-2"
-                />
-                <label htmlFor="cv">CV</label>
-              </div>
-              <div>
-                <input
-                  id="nlp"
-                  type="checkbox"
-                  className="default:ring-2 mr-2"
-                />
-                <label htmlFor="nlp">NLP</label>
-              </div>
-              <div>
-                <input
-                  id="llm"
-                  type="checkbox"
-                  className="default:ring-2 mr-2"
-                />
-                <label htmlFor="llm">LLM</label>
-              </div>
+          <div className="border-b-2">
+            <div className="flex justify-between space-x-2">
+              <Choice
+                name="ML"
+                isChecked={true}
+                setChoiceState={true}
+              />
+
+              <Choice
+                name="CV"
+                isChecked={true}
+                setChoiceState={true}
+              />
+
+              <Choice
+                name="NLP"
+                isChecked={true}
+                setChoiceState={true}
+              />
+
+              <Choice
+                name="LLM"
+                isChecked={true}
+                setChoiceState={true}
+              />
             </div>
           </div>
         </div>
@@ -89,7 +82,7 @@ function UserProfile() {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default UserProfile;
+export default UserProfile

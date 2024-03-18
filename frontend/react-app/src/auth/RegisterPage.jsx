@@ -1,95 +1,95 @@
-import { useRef, useState, useEffect } from "react";
-import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import axios from "../api/api";
-import "./Register.css";
-import Choice from "../components/Choice";
-import { Link } from "react-router-dom";
+import { useRef, useState, useEffect } from "react"
+import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "react-router-dom"
+
+import axios from "../api/api"
+import Choice from "../components/Choice"
+import "./RegisterPage.css"
 
 // const EMAIL_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-const USER_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
-const REGISTER_URL = "/register";
+const USER_REGEX = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/
+const REGISTER_URL = "/register"
 
-const Register = () => {
-  const userRef = useRef();
-  const errRef = useRef();
+const RegisterPage = () => {
+  const userRef = useRef()
+  const errRef = useRef()
 
-  const [user, setUser] = useState("");
-  const [validName, setValidName] = useState(false);
-  const [userFocus, setUserFocus] = useState(false);
+  const [user, setUser] = useState("")
+  const [validName, setValidName] = useState(false)
+  const [userFocus, setUserFocus] = useState(false)
 
-  const [pwd, setPwd] = useState("");
-  const [validPwd, setValidPwd] = useState(false);
-  const [pwdFocus, setPwdFocus] = useState(false);
+  const [pwd, setPwd] = useState("")
+  const [validPwd, setValidPwd] = useState(false)
+  const [pwdFocus, setPwdFocus] = useState(false)
 
-  const [matchPwd, setMatchPwd] = useState("");
-  const [validMatch, setValidMatch] = useState(false);
-  const [matchFocus, setMatchFocus] = useState(false);
+  const [matchPwd, setMatchPwd] = useState("")
+  const [validMatch, setValidMatch] = useState(false)
+  const [matchFocus, setMatchFocus] = useState(false)
 
-  const [errMsg, setErrMsg] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [errMsg, setErrMsg] = useState("")
+  const [success, setSuccess] = useState(false)
 
-  const [isML, setIsML] = useState(false);
-  const [isCV, setIsCV] = useState(false);
-  const [isNLP, setIsNLP] = useState(false);
-  const [isLLM, setIsLLM] = useState(false);
-
-  useEffect(() => {
-    userRef.current.focus();
-  }, []);
+  const [isML, setIsML] = useState(false)
+  const [isCV, setIsCV] = useState(false)
+  const [isNLP, setIsNLP] = useState(false)
+  const [isLLM, setIsLLM] = useState(false)
 
   useEffect(() => {
-    setValidName(USER_REGEX.test(user));
-  }, [user]);
+    userRef.current.focus()
+  }, [])
 
   useEffect(() => {
-    setValidPwd(PWD_REGEX.test(pwd));
-    setValidMatch(pwd === matchPwd);
-  }, [pwd, matchPwd]);
+    setValidName(USER_REGEX.test(user))
+  }, [user])
 
   useEffect(() => {
-    setErrMsg("");
-  }, [user, pwd, matchPwd]);
+    setValidPwd(PWD_REGEX.test(pwd))
+    setValidMatch(pwd === matchPwd)
+  }, [pwd, matchPwd])
+
+  useEffect(() => {
+    setErrMsg("")
+  }, [user, pwd, matchPwd])
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
     // if button enabled with JS hack
-    const v1 = USER_REGEX.test(user);
-    const v2 = PWD_REGEX.test(pwd);
+    const v1 = USER_REGEX.test(user)
+    const v2 = PWD_REGEX.test(pwd)
     if (!v1 || !v2) {
-      setErrMsg("Invalid Entry");
-      return;
+      setErrMsg("Invalid Entry")
+      return
     }
     try {
       const response = await axios.post(REGISTER_URL, JSON.stringify({ username: user, password: pwd, password2: matchPwd, email: user }), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      });
-      console.log(response?.data);
-      console.log(response?.accessToken);
-      console.log(JSON.stringify(response));
-      setSuccess(true);
+      })
+      console.log(response?.data)
+      console.log(response?.accessToken)
+      console.log(JSON.stringify(response))
+      setSuccess(true)
       //clear state and controlled inputs
       //need value attrib on inputs for this
-      setUser("");
-      setPwd("");
-      setMatchPwd("");
+      setUser("")
+      setPwd("")
+      setMatchPwd("")
     } catch (err) {
       if (!err?.response) {
-        setErrMsg("No Server Response");
+        setErrMsg("No Server Response")
       } else if (err.response?.status === 409) {
-        setErrMsg("Username Taken");
+        setErrMsg("Username Taken")
       } else {
-        setErrMsg("Registration Failed");
+        setErrMsg("Registration Failed")
       }
-      errRef.current.focus();
+      errRef.current.focus()
     }
-  };
+  }
 
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
-      <div className="border-2 border-gray-200 p-4 rounded-lg shadow-md">
+      <div className="border-2 bg-white border-gray-200 p-10 rounded-lg shadow-md">
         {success ? (
           <section>
             <h1>Success!</h1>
@@ -254,14 +254,14 @@ const Register = () => {
             </form>
             <div>
               <Link to={"/login"}>
-                <p className="text-sm text-slate-500 text-center py-2">Already a user? Login instead</p>
+                <p className="text-sm font-bold text-blue-500 text-center py-2">Already a user? Login instead</p>
               </Link>
             </div>
           </section>
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Register;
+export default RegisterPage
