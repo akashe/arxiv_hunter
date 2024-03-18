@@ -1,20 +1,20 @@
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../provider/authProvider";
+// import { useNavigate } from "react-router-dom";
+// import { useAuth } from "../provider/authProvider";
 
-const Login = () => {
-  const { setToken } = useAuth();
-  const navigate = useNavigate();
+// const Login = () => {
+//   const { setToken } = useAuth();
+//   const navigate = useNavigate();
 
-  const handleLogin = () => {
-    setToken("this is a test token");
-    navigate("/", { replace: true });
-  };
+//   const handleLogin = () => {
+//     setToken("this is a test token");
+//     navigate("/", { replace: true });
+//   };
 
-  setTimeout(() => {
-    handleLogin();
-  }, 3 * 1000);
+//   setTimeout(() => {
+//     handleLogin();
+//   }, 3 * 1000);
 
-  return <>Login Page</>;
-};
+//   return <>Login Page</>;
+// };
 
-export default Login;
+// export default Login;

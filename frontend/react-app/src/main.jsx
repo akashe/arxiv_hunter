@@ -1,37 +1,19 @@
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import "./index.css";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import LoginSignup from "./pages/LoginSignup.jsx";
-import NotFoundPage from "./pages/NotFoundPage.jsx";
-import Form from "./pages/Form.jsx";
-import UserProfile from "./pages/UserProfile.jsx";
-import Register from "./components/Register.jsx";
-import TestRegister from "./components/TestRegister.jsx";
-import Login from "./components/Login.jsx";
-import DashBoard from "./dashboard/DashBoard.jsx";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/ReactToastify.min.css";
-import { Auth0Provider } from "@auth0/auth0-react";
-import RegisterPage from "./pages/RegisterPage.jsx";
-import LoginPage from "./components/LoginPage.jsx";
-import AuthProvider from "./provider/authProvider.jsx";
-import Routes from "./routes/index.jsx";
+import { createBrowserRouter, RouterProvider } from "react-router-dom"
+
+import "./index.css"
+import App from "./App.jsx"
+import NotFoundPage from "./pages/NotFoundPage.jsx"
+import UserProfile from "./pages/UserProfile.jsx"
+import RegisterPage from "./pages/RegisterPage.jsx"
+import LoginPage from "./components/LoginPage.jsx"
+
+const token = localStorage.getItem("appToken")
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App></App>,
-    errorElement: <NotFoundPage></NotFoundPage>,
-  },
-  {
-    path: "/auth",
-    element: <LoginSignup></LoginSignup>,
-    errorElement: <NotFoundPage></NotFoundPage>,
-  },
-  {
-    path: "/form",
-    element: <Form></Form>,
+    element: token ? <App /> : <LoginPage />,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
@@ -45,22 +27,10 @@ const router = createBrowserRouter([
     errorElement: <NotFoundPage></NotFoundPage>,
   },
   {
-    path: "/testregister",
-    element: <TestRegister></TestRegister>,
-    errorElement: <NotFoundPage></NotFoundPage>,
-  },
-  {
     path: "/login",
     element: <LoginPage></LoginPage>,
     errorElement: <NotFoundPage></NotFoundPage>,
   },
-  {
-    path: "/dashboard",
-    element: <DashBoard></DashBoard>,
-    errorElement: <NotFoundPage></NotFoundPage>,
-  },
-]);
+])
 
-ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router}></RouterProvider>);
-
-
+ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router}></RouterProvider>)

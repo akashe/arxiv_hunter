@@ -12,13 +12,13 @@ function Main() {
     try {
       const { data } = await axios.get("http://127.0.0.1:8000/recommend", {
         params: {
-          query: "LLM, Attention, GPT",
+          query: "LLM Attention GPT",
         },
         headers: {
           Accept: "application/json",
           Authorization: `Bearer ${localStorage.getItem("appToken")}`,
         },
-      });
+      })
       console.log(data);
       setArxivData(data);
     } catch (error) {

@@ -98,18 +98,17 @@ class Recommender:
         # return the top 10 results
         return result
 
-
 if __name__ == "__main__":
-    # vocabulary = LearnTransformVocabulary(
-    #     json_data = "data/master_data.json"
-    # )
-    recommender = Recommender(
-        vectorizer_path="data/vectorizer.pkl",
-        vocabulary_path="data/transformed_data.pkl",
+    vocabulary = LearnTransformVocabulary(
+        json_data = "data/master_data.json"
     )
-    # recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model")
+    recommender = Recommender(
+        vectorizer_path="/data/vectorizer.pkl",
+        vocabulary_path="/data/transformed_data.pkl",
+    )
+    print(recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model"))
 
-    pdb.set_trace()
+    # pdb.set_trace()
 
     # # Create a parser object
     # parser = argparse.ArgumentParser(
