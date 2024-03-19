@@ -65,9 +65,9 @@ class LearnTransformVocabulary(LearnVocabularyBase):
 
         try:
             # load the vectorizer and the transformed data from the pickle files
-            with open("../../data/vectorizer.pkl", "rb") as f:
+            with open("data/vectorizer.pkl", "rb") as f:
                 self.vectorizer = pickle.load(f)
-            with open("../../data/transformed_data.pkl", "rb") as f:
+            with open("data/transformed_data.pkl", "rb") as f:
                 self.transformed_data = pickle.load(f)
         except FileNotFoundError:
             with open("data/vectorizer.pkl", "wb") as f:

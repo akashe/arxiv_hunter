@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom"
-import { useEffect, useState } from "react"
 import Choice from "../components/Choice"
 
 const useLogout = () => {
