@@ -1,15 +1,12 @@
 import { useRef, useState, useEffect } from "react"
 import { Link, useNavigate, useLocation } from "react-router-dom"
 
-import useAuth from "../hooks/useAuth"
 import axios from "../api/api"
 import "./LoginPage.css"
 
 const LOGIN_URL = "/login"
 
 const LoginPage = () => {
-  const { setAuth } = useAuth()
-
   const navigate = useNavigate()
   const location = useLocation()
   const from = location.state?.from?.pathname || "/"

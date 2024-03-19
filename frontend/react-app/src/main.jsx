@@ -1,12 +1,12 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
 
-import "./index.css"
 import App from "./App.jsx"
 import NotFoundPage from "./ui/NotFoundPage.jsx"
 import UserProfile from "./user/UserProfile.jsx"
 import RegisterPage from "./auth/RegisterPage.jsx"
 import LoginPage from "./auth/LoginPage.jsx"
+import "./index.css"
 
 const token = localStorage.getItem("appToken")
 
