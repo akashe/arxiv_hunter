@@ -8,15 +8,13 @@ function ExpandableText({ title }) {
 
   return (
     <>
-      <p className={`${isClamped ? "line-clamp-3" : "lg:line-clamp-none"}`}>
-        {title}
-      </p>
+      <p className={`${isClamped ? "line-clamp-3" : "lg:line-clamp-none"}`}>{title}</p>
       <button
         onClick={handleClick}
-        className="text-2xl font-bold text-blue-600">
-        {isClamped ? "+" : "-"}
+        className="font-sm text-blue-600">
+        {isClamped ? "Read more..." : "...read less"}
       </button>
     </>
-  );
+  )
 }
 export default ExpandableText;

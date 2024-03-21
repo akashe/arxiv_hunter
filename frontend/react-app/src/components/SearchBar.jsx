@@ -27,12 +27,12 @@ function SearchBar({ setSearchResults }) {
   }
 
   return (
-    <div className="fixed top-16 mt-4 mx-6 left-0 right-0 z-10 h-16 flex items-center justify-center">
+    <div className="fixed top-16 bg-gradient-to-r from-blue-200 via-purple-200 to-lime-200 left-0 right-0 z-10 h-24 flex items-center justify-center">
       <div className="relative flex items-center w-full max-w-[800px] min-w-min">
         <input
           type="text"
-          className="w-full px-8 py-5 font-semibold text-2xl rounded-full bg bg-slate-300 text-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-opacity-100"
-          placeholder="Search here..."
+          className="w-full mx-4 px-8 pr-14 py-5 font-medium shadow-lg text-2xl rounded-full bg-white text-black placeholder:font-light placeholder:text-slate-300 focus:outline-none focus:ring-2 focus:ring-black focus:ring-opacity-100"
+          placeholder="Try searching here"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
@@ -40,9 +40,9 @@ function SearchBar({ setSearchResults }) {
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
-          strokeWidth={2.5}
-          stroke="gray"
-          className="w-10 h-10 absolute right-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
+          strokeWidth={1.5}
+          stroke="black"
+          className="w-10 h-10 absolute right-7 top-1/2 transform -translate-y-1/2 cursor-pointer"
           onClick={handleSearch}>
           <path
             strokeLinecap="round"

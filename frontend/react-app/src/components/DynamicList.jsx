@@ -38,16 +38,16 @@ function Main() {
               return (
                 <div
                   key={data?.id}
-                  className="text-center text-slate-800 mt-4 p-4 bg-gradient-to-r from-slate-50 to bg-slate-100 border-slate-100 rounded-md shadow-md">
-                  <p className="mb-4 text-xl font-bold text-slate-900">{data?.title}</p>
-                  <p className="text-sm text-slate-800 mb-4">
+                  className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
+                  <p className="mb-1 text-base font-semibold text-black">{data?.title}</p>
+                  <p className="text-sm text-black mb-1">
                     <ExpandableText title={data?.summary}></ExpandableText>
                   </p>
                   <div className="flex justify-center">
                     <Link
                       to={data?.id}
                       target="_blank">
-                      <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
+                      <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -66,7 +66,7 @@ function Main() {
                     <Link
                       to={data?.pdf_link}
                       target="_blank">
-                      <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
+                      <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -90,16 +90,16 @@ function Main() {
               return (
                 <div
                   key={data?.id}
-                  className="text-center text-slate-800 mt-4 p-4 bg-gradient-to-r from-slate-50 to bg-slate-100 border-slate-100 rounded-md shadow-md">
-                  <p className="mb-4 text-xl font-bold text-slate-900">{data?.title}</p>
-                  <p className="text-sm text-slate-800 mb-4">
+                  className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
+                  <p className="mb-1 text-base font-semibold text-black">{data?.title}</p>
+                  <p className="text-sm text-black mb-1">
                     <ExpandableText title={data?.summary}></ExpandableText>
                   </p>
                   <div className="flex justify-center">
                     <Link
                       to={data?.id}
                       target="_blank">
-                      <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
+                      <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -118,7 +118,7 @@ function Main() {
                     <Link
                       to={data?.pdf_link}
                       target="_blank">
-                      <button className="text-xl font-bold text-slate-800 border-slate-800 text-center bg-slate-200 rounded-full h-10 w-10 mr-2 hover:bg-slate-300 flex justify-center items-center">
+                      <button className=" bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"

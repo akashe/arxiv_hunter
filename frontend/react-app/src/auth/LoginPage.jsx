@@ -103,7 +103,7 @@ const LoginPage = () => {
               required
               className="px-10 py-2 rounded-full bg-slate-200 text-gray-600 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-opacity-60"
             />
-            <button className="px-4 py-2 bg-black text-white font-bold rounded-full">Sign In</button>
+            <button className="px-4 py-2 mt-4 bg-black text-white font-bold rounded-full">Sign In</button>
           </form>
           <div>
             <Link to={"/register"}>

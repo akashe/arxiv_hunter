@@ -1,5 +1,6 @@
 import { useRef, useState, useEffect } from "react"
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Link } from "react-router-dom"
 
 import axios from "../api/api"
@@ -247,7 +248,7 @@ const RegisterPage = () => {
               </div>
 
               <button
-                className="px-4 py-2 bg-black text-white font-bold rounded-full"
+                className="px-4 mt-4 py-2 bg-black text-white font-bold rounded-full"
                 disabled={!validName || !validPwd || !validMatch ? true : false}>
                 Sign Up
               </button>
