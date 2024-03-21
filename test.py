@@ -1,5 +1,6 @@
 import pandas as pd
-df = pd.read_pickle("data/master_data3.pkl")
+df:pd.DataFrame = pd.read_pickle("data/master_data3.pkl")
+df.to_json("data/master_data.json")
 print(df.shape)
 print(df.head(20))
 print(df.columns)

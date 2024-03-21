@@ -32,7 +32,7 @@ function Main() {
   return (
     <div>
       <SearchBar setSearchResults={setSearchResults} />
-      <main className="min-h-screen flex flex-col flex-grow my-32">
+      <main className="min-h-screen flex flex-col flex-grow my-40">
         {searchResults.length > 0
           ? searchResults.map((data) => {
               return (
@@ -84,7 +84,7 @@ function Main() {
                     </Link>
                   </div>
                 </div>
-              );
+              )
             })
           : arxivData.map((data) => {
               return (
@@ -136,11 +136,11 @@ function Main() {
                     </Link>
                   </div>
                 </div>
-              );
+              )
             })}
       </main>
     </div>
-  );
+  )
 }
 
 export default Main;

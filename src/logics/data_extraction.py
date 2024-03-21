@@ -43,6 +43,7 @@ def download_data(local_entries, split_no, save_path, days):
                     pdf_text += page.get_text()
                 # Store the extracted data in the dictionary with the id as the key
                 downloaded_data[id] = {
+                    "id": id,
                     "title": title,
                     "published_date": published_date,
                     "pdf_link": pdf_link,
