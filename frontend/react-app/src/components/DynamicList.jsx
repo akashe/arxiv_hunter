@@ -40,7 +40,7 @@ function Main() {
                   key={data?.id}
                   className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
                   <p className="mb-1 text-base font-semibold text-black">{data?.title}</p>
-                  <p className="text-sm text-black mb-1">
+                  <p className="text-sm text-black">
                     <ExpandableText title={data?.summary}></ExpandableText>
                   </p>
                   <div className="flex justify-center">
@@ -92,7 +92,7 @@ function Main() {
                   key={data?.id}
                   className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
                   <p className="mb-1 text-base font-semibold text-black">{data?.title}</p>
-                  <p className="text-sm text-black mb-1">
+                  <p className="text-sm text-black">
                     <ExpandableText title={data?.summary}></ExpandableText>
                   </p>
                   <div className="flex justify-center">
