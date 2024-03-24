@@ -36,6 +36,23 @@ const RegisterPage = () => {
   const [isNLP, setIsNLP] = useState(false)
   const [isLLM, setIsLLM] = useState(false)
 
+  const handlePreference = () => {
+    // Initialize an empty string to store preferences
+    let preferences = ""
+
+    // Check each state and add the corresponding term to the preference string
+    if (isML) preferences += " ML"
+    if (isCV) preferences += " CV"
+    if (isNLP) preferences += " NLP"
+    if (isLLM) preferences += " LLM"
+
+    // Remove leading space (if any)
+    preferences = preferences.trim()
+
+    // You can use this preference string for further processing
+    console.log(preferences) // Output: "ML CV LLM"
+  }
+
   useEffect(() => {
     userRef.current.focus()
   }, [])
@@ -63,7 +80,7 @@ const RegisterPage = () => {
       return
     }
     try {
-      const response = await axios.post(REGISTER_URL, JSON.stringify({ username: user, password: pwd, password2: matchPwd, email: user }), {
+      const response = await axios.post(REGISTER_URL, JSON.stringify({ username: user, password: pwd, password2: matchPwd, email: user, preferences }), {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -231,18 +248,22 @@ const RegisterPage = () => {
                   <Choice
                     isChecked={isML}
                     setChoiceState={setIsML}
+                    onPreferenceChange={handlePreference}
                     name="ML"></Choice>
                   <Choice
                     isChecked={isCV}
                     setChoiceState={setIsCV}
+                    onPreferenceChange={handlePreference}
                     name="CV"></Choice>
                   <Choice
                     isChecked={isNLP}
                     setChoiceState={setIsNLP}
+                    onPreferenceChange={handlePreference}
                     name="NLP"></Choice>
                   <Choice
                     isChecked={isLLM}
                     setChoiceState={setIsLLM}
+                    onPreferenceChange={handlePreference}
                     name="LLM"></Choice>
                 </div>
               </div>
