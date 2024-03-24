@@ -59,4 +59,7 @@ def login(user:UserLogin):
         )
     # if everything is fine till here, create token
     token = auth_handler.encode_token(user_id=user.username)
-    return {"token":token}
+    return {
+        "token":token,
+        "username":user.username
+    }
