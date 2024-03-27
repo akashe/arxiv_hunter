@@ -33,7 +33,11 @@ python-jose = "^3.3.0"
 pyjwt = "^2.8.0"
 bcrypt = "^4.1.2"
 schedule = "^1.2.1"
+pyarrow = "^15.0.2"
 
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.3"
 
 [build-system]
 requires = ["poetry-core"]

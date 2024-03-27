@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 
 import Choice from "../components/Choice"
+import UserPreferences from "./UserPreference"
 
 const useLogout = () => {
   const navigate = useNavigate()
@@ -79,7 +80,9 @@ function UserProfile() {
               />
             </div>
           </div>
+          <UserPreferences />
         </div>
+
         <div className="flex justify-center items-center">
           <button
             onClick={handleLogout}

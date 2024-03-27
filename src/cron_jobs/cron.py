@@ -4,14 +4,14 @@ import time
 import schedule
 
 import helper
-# from ..logics.arxiv_extractor import ArxivExtractor
+from ..logics.data_extraction import ArxivParser
 
 print(helper.get_time())
 
 def task() -> None:
-    # arxiv_extractor = ArxivExtractor(days=60, max_results=5, data_path="data/")
-    # arxiv_extractor.store_data()
-    print("Doing task...", helper.get_time())
+    parser = ArxivParser()
+    parser.store_data(max_results=1000, days=1)
+    # print("Doing task...", helper.get_time())
 
 # schedule.every(interval=5).seconds.do(job_func=task)
 # schedule.every(interval=5).hours.do(job_func=task)

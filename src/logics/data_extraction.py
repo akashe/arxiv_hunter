@@ -127,9 +127,9 @@ class ArxivParser:
 
     def store_data(
         self,
-        save_file_name: str = "master_data3.pkl",
+        save_file_name: str = "master_data.pkl",
         max_results: int = 500,
-        days: int = 365*2,
+        days: int = 365,
     ) -> None:
         # Call the get_results method and store the dataframe in the self.extracted_data attribute
         self.extracted_data = self.get_results(max_results, days)
