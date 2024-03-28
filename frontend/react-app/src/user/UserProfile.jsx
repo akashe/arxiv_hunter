@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import Choice from "../components/Choice"
 import UserPreferences from "./UserPreference"
@@ -18,11 +19,35 @@ const useLogout = () => {
 function UserProfile() {
   const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail") || "")
 
+  const [isML, setIsML] = useState(false)
+  const [isCV, setIsCV] = useState(false)
+  const [isNLP, setIsNLP] = useState(false)
+  const [isLLM, setIsLLM] = useState(false)
+
+  const handlePreference = () => {
+    let preferences = ""
+
+    if (isML) preferences += "ML "
+    if (isCV) preferences += "CV "
+    if (isNLP) preferences += "NLP "
+    if (isLLM) preferences += "LLM "
+
+    if (preferences) {
+      toast(`Your Preferences: ${preferences}`)
+      localStorage.setItem("preferences", preferences)
+    }
+  }
+
   useEffect(() => {
     setUserEmail(localStorage.getItem("userEmail") || "")
   }, [])
 
   const handleLogout = useLogout()
+
+  useEffect(() => {
+    handlePreference() // call handlePreference function on component mount and when checkbox states change
+  }, [isML, isCV, isNLP, isLLM]) // add checkbox states to dependency array
+
   return (
     <div className="flex justify-center items-center h-[100vh] bg-gradient-to-tr from-slate-50 to-blue-100">
       <div className="bg-slate-50 shadow-md rounded-lg p-14">
@@ -40,7 +65,7 @@ function UserProfile() {
           </svg>
         </div>
         <h1 className="text-xl font-semibold text-black text-center">{userEmail.slice(0, userEmail.indexOf("@"))}</h1>
-        <div className="p-4 my-4 rounded-md bg-slate-100 shadow-md border-black ">
+        <div className="p-4 my-4 w-[260px] rounded-md bg-slate-100 shadow-md border-black ">
           <div className="flex justify-start items-center border-b-2 pb-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -57,26 +82,30 @@ function UserProfile() {
             <div className="flex justify-between space-x-2">
               <Choice
                 name="ML"
-                isChecked={true}
-                setChoiceState={true}
+                isChecked={isML}
+                setChoiceState={setIsML}
+                onPreferenceChange={handlePreference}
               />
 
               <Choice
                 name="CV"
-                isChecked={true}
-                setChoiceState={true}
+                isChecked={isCV}
+                setChoiceState={setIsCV}
+                onPreferenceChange={handlePreference}
               />
 
               <Choice
                 name="NLP"
-                isChecked={true}
-                setChoiceState={true}
+                isChecked={isNLP}
+                setChoiceState={setIsNLP}
+                onPreferenceChange={handlePreference}
               />
 
               <Choice
                 name="LLM"
-                isChecked={true}
-                setChoiceState={true}
+                isChecked={isLLM}
+                setChoiceState={setIsLLM}
+                onPreferenceChange={handlePreference}
               />
             </div>
           </div>

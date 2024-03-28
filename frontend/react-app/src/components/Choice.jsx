@@ -1,8 +1,8 @@
+// import { toast } from "react-toastify"
 function Choice(props) {
   const { name, isChecked, setChoiceState, onPreferenceChange } = props
   const handleChange = () => {
     setChoiceState(!isChecked) // Toggle checkbox state
-    onPreferenceChange() // Call the handlePreference function passed as a prop
   }
   return (
     <div>
@@ -18,4 +18,4 @@ function Choice(props) {
   )
 }
 
-export default Choice;
+export default Choice

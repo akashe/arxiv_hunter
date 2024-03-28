@@ -1,5 +1,7 @@
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import App from "./App.jsx"
 import NotFoundPage from "./ui/NotFoundPage.jsx"
@@ -24,7 +26,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: <UserProfile loggedIn={token ? true : false}></UserProfile>,
+    element: token ? <UserProfile loggedIn={token ? true : false}></UserProfile> : <LoginPage />,
     errorElement: <NotFoundPage />,
   },
   {
@@ -39,4 +41,9 @@ const router = createBrowserRouter([
   },
 ])
 
-ReactDOM.createRoot(document.getElementById("root")).render(<RouterProvider router={router}></RouterProvider>)
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <>
+    <RouterProvider router={router} />
+    <ToastContainer />
+  </>
+)
