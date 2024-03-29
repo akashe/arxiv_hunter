@@ -10,7 +10,7 @@ print(helper.get_time())
 
 def task() -> None:
     parser = ArxivParser()
-    parser.store_data(max_results=1000, days=1)
+    parser.store_data(save_file_name="../../data/latest_data.pkl",max_results=1000, days=1)
     # print("Doing task...", helper.get_time())
 
 # schedule.every(interval=5).seconds.do(job_func=task)

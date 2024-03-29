@@ -22,6 +22,8 @@ def download_data(local_entries, split_no, save_path, days):
     for entry in tqdm(local_entries):
         try:
             published_date = datetime.strptime(entry.published, "%Y-%m-%dT%H:%M:%SZ")
+            published_date_save = entry.published[:10]
+            print(published_date_save)
             current_date = datetime.now()
             date_diff = (current_date - published_date).days
 
@@ -45,7 +47,7 @@ def download_data(local_entries, split_no, save_path, days):
                 downloaded_data[id] = {
                     "id": id,
                     "title": title,
-                    "published_date": published_date,
+                    "published_date": published_date_save,
                     "pdf_link": pdf_link,
                     "summary": summary,
                     "pdf_text": pdf_text,
