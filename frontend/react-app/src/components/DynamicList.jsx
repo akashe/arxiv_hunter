@@ -16,7 +16,8 @@ function Main() {
       setLoading(true) // Set loading to true before fetching data
       const { data } = await axios.get("http://127.0.0.1:8000/recommend", {
         params: {
-          query: localStorage.getItem("preferences"),
+          // localStorage.getItem("preferences")
+          query: "CV LLM",
         },
         headers: {
           Accept: "application/json",

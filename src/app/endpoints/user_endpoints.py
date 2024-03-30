@@ -4,7 +4,7 @@ from fastapi import APIRouter, HTTPException, status, responses
 from sqlmodel import Session
 
 from ..auth import auth
-from ..models.user_models import UserInput, User, UserLogin
+from ..models.user_models import UserInput, User, UserLogin, UserPreferences
 from ..repos.user_repos import select_all_users, find_user
 from ..db.db import ENGINE
 
@@ -32,7 +32,8 @@ def register(user:UserInput):
     new_user = User(
         username=user.username,
         email=user.email,
-        password=hash_password
+        password=hash_password,
+        preferences=user.preferences  # Added preferences field
     )
     session.add(instance=new_user)
     session.commit()
@@ -61,5 +62,6 @@ def login(user:UserLogin):
     token = auth_handler.encode_token(user_id=user.username)
     return {
         "token":token,
-        "username":user.username
+        "username":user_found.username,
+        "preferences":user_found.preferences
     }

@@ -25,12 +25,13 @@ function UserProfile() {
   const [isLLM, setIsLLM] = useState(false)
 
   const handlePreference = () => {
+    let existingPreferences = localStorage.getItem("preferences")
     let preferences = ""
 
-    if (isML) preferences += "ML "
-    if (isCV) preferences += "CV "
-    if (isNLP) preferences += "NLP "
-    if (isLLM) preferences += "LLM "
+    if (isML || existingPreferences.includes("ML")) preferences += "ML"
+    if (isCV || existingPreferences.includes("CV")) preferences += " CV"
+    if (isNLP || existingPreferences.includes("NLP")) preferences += " NLP"
+    if (isLLM || existingPreferences.includes("LLM")) preferences += " LLM" 
 
     if (preferences) {
       toast(`Your Preferences: ${preferences}`)

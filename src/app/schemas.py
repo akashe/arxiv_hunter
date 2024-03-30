@@ -23,7 +23,7 @@ class User(_UserBase):
     """Schema for representing a User including additional details and posts.
     Inherits from _UserBase and adds fields like ID, active status, and a list of posts.
     """
-    preferences:str
+    preferences: str = "" # Added preferences field with default value as empty string
 
     id: int
     is_active: bool
@@ -40,3 +40,4 @@ class RecommendedPaper(_pydantic.BaseModel):
     pdf_link: _pydantic.HttpUrl
     summary: str
     pdf_text: str
+

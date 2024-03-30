@@ -33,6 +33,7 @@ const LoginPage = () => {
       })
       localStorage.setItem("appToken", response.data.token)
       localStorage.setItem("userEmail", response.data.username)
+      localStorage.setItem("preferences", response.data.preferences)
       console.log(localStorage.getItem("appToken"))
       console.log(JSON.stringify(response?.data))
 

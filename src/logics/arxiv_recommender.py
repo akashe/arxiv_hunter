@@ -37,7 +37,7 @@ class LearnTransformVocabulary(LearnVocabularyBase):
     """Recommender Implementation"""
 
     def __init__(self, json_data="../../data/master_data.json") -> None:
-        self.data = pd.read_json(json_data)
+        self.data = pd.read_json(path_or_buf=json_data, lines=True)
         self.corpus = self.data["pdf_text"]
         self.learn_vocabulary()
         self.transform_data()
@@ -103,8 +103,8 @@ if __name__ == "__main__":
         json_data = "data/master_data.json"
     )
     recommender = Recommender(
-        vectorizer_path="/data/vectorizer.pkl",
-        vocabulary_path="/data/transformed_data.pkl",
+        vectorizer_path="data/vectorizer.pkl",
+        vocabulary_path="data/transformed_data.pkl",
     )
     print(recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model"))
 

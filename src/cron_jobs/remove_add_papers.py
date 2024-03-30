@@ -10,13 +10,13 @@ def remove_old_papers(data_path, save_path, window_size) -> None:
 
     # Calculate the cutoff date
     today = datetime.today().date()
-    cutoff_date = (today - timedelta(days=window_size)).strftime("%Y-%m-%d")
+    cutoff_date = (today - timedelta(days=window_size + 1)).strftime("%Y-%m-%d")
 
     # Convert cutoff_date to datetime
     cutoff_date = pd.to_datetime(arg=cutoff_date)
 
     # Find papers to remove
-    papers_to_remove = df[df['published_date'] < cutoff_date]
+    papers_to_remove = df[df['published_date'] <= cutoff_date]
 
     # Remove the old papers
     df = df[~df.index.isin(values=papers_to_remove.index)]
