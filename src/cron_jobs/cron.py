@@ -8,6 +8,13 @@ from ..logics.data_extraction import ArxivParser
 
 print(helper.get_time())
 
+# First install
+# Download data
+# create vocab for recommender
+# check everything is doable by poetry, for example installation and running, issue with numpy installation https://github.com/python-poetry/poetry/issues/3894
+# preferences of the user
+# add
+
 def task() -> None:
     parser = ArxivParser()
     parser.store_data(save_file_name="../../data/latest_data.pkl",max_results=1000, days=1)

@@ -1,9 +1,9 @@
 """Implementation of TFIDF Recommender"""
 
 import os.path
-import pickle
-import argparse
 import pdb
+import pickle
+import numpy as np
 from abc import abstractmethod, ABC
 import pandas as pd
 import nltk
@@ -36,8 +36,8 @@ class LearnVocabularyBase(ABC):
 class LearnTransformVocabulary(LearnVocabularyBase):
     """Recommender Implementation"""
 
-    def __init__(self, json_data="../../data/master_data.json") -> None:
-        self.data = pd.read_json(path_or_buf=json_data, lines=True)
+    def __init__(self, data_path="data/master_data.pkl") -> None:
+        self.data = pd.read_pickle(data_path)
         self.corpus = self.data["pdf_text"]
         self.learn_vocabulary()
         self.transform_data()
@@ -84,31 +84,51 @@ class Recommender:
         with open(vocabulary_path, "rb") as f:
             self.learnt_transformed_vocabulary = pickle.load(f)
 
+    # def recommend(self, query: str):
+    #     # use the vectorizer to transform the query
+    #     transformed_query = self.vectorizer.transform([query])
+    #     # create a cosine similarity matrix with the transformed query and the learnt vocabulary
+    #     cosine_similarities = cosine_similarity(
+    #         X=transformed_query, Y=self.learnt_transformed_vocabulary
+    #     )
+    #     # sort the results by similarity score
+    #     result = sorted(
+    #         list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x: x[1]
+    #     )
+    #     # return the top 10 results
+    #     return result
+
+    def top100(self, arr, results=100):
+        kth_largest = (results + 1) * -1
+        return np.argsort(arr)[:kth_largest:-1]
+
     def recommend(self, query: str):
-        # use the vectorizer to transform the query
+        query = query.replace("+", " ")
         transformed_query = self.vectorizer.transform([query])
-        # create a cosine similarity matrix with the transformed query and the learnt vocabulary
         cosine_similarities = cosine_similarity(
-            X=transformed_query, Y=self.learnt_transformed_vocabulary
-        )
-        # sort the results by similarity score
-        result = sorted(
-            list(enumerate(cosine_similarities[0])), reverse=True, key=lambda x: x[1]
-        )
-        # return the top 10 results
-        return result
+            X=self.learnt_transformed_vocabulary,
+            Y=transformed_query
+        ).flatten()
+        top_related_indices = self.top100(cosine_similarities)
+        return top_related_indices
 
 if __name__ == "__main__":
-    vocabulary = LearnTransformVocabulary(
-        json_data = "data/master_data.json"
-    )
+    # vocabulary = LearnTransformVocabulary(
+    #     data_path = "data/master_data.pkl"
+    # )
     recommender = Recommender(
         vectorizer_path="data/vectorizer.pkl",
         vocabulary_path="data/transformed_data.pkl",
     )
-    print(recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model"))
 
-    # pdb.set_trace()
+    recommendations = recommender.recommend(query="LLM , Attention, Mechanism, GPT, Mamba, Model")
+    print(recommendations)
+    df = pd.read_pickle("data/master_data.pkl")
+    print(len(df))
+
+    for index in recommendations:
+        paper_data = df.iloc[index].to_dict()
+        print(paper_data['title'])
 
     # # Create a parser object
     # parser = argparse.ArgumentParser(

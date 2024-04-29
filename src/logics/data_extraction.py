@@ -11,6 +11,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import fitz  # this is pymupdf
 from typing import Dict, List, Tuple
+import datetime
 
 STANDARD_SEARCH_QUERY = f"cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML OR cat:cs.IR"
 
@@ -127,14 +128,88 @@ class ArxivParser:
 
         return pd.concat(dfs, ignore_index=True)
 
+
+    def get_results_iterative(
+        self,
+        max_results: int = 5,
+        days: int = 365*5,
+        search_query: str = STANDARD_SEARCH_QUERY,
+        num_threads: int = 8,
+        today_only: bool = False,
+        time_delta_for_each_call: int = 120
+    ) -> pd.DataFrame:
+
+        end_date = datetime.date.today()
+        if today_only:
+            start_date = end_date
+        else:
+            start_date = end_date - datetime.timedelta(days=days)
+
+        dfs = []
+        while start_date <= end_date:
+            query_start_date = start_date
+            query_end_date = min(start_date + datetime.timedelta(days=time_delta_for_each_call), end_date)
+
+            # Construct the url with the query parameters
+            params = {
+                "search_query": f"{search_query} AND submittedDate:[{query_start_date.strftime('%Y%m%d')}0000 TO {query_end_date.strftime('%Y%m%d')}2359]",
+                "start": 0,
+                "max_results": max_results,
+                "sortBy": "submittedDate",
+                "sortOrder": "descending",
+            }
+            url = self.base_url + "?" + requests.compat.urlencode(params)
+
+            # Send a GET request to the api endpoint
+            response = requests.get(url)
+            # Parse the response
+            entries = feedparser.parse(response.text).entries
+
+            splits = []
+            for i in range(num_threads):
+                splits.append(
+                    entries[
+                        (i * (len(entries) // num_threads)) : (
+                            (i + 1) * (len(entries) // num_threads)
+                        )
+                    ]
+                )
+
+            if len(entries) % num_threads != 0:
+                mod = len(entries) % num_threads
+                splits[-1].extend(entries[-mod:])
+
+            process_list = []
+            for i, split in enumerate(splits):
+                p = multiprocessing.Process(
+                    target=download_data, args=[split, i, self.data_path, days]
+                )
+                p.start()
+                process_list.append(p)
+
+            for process in process_list:
+                process.join()
+
+            # combine all the downloaded content
+            for i in range(len(splits)):
+                save_path = os.path.join(self.data_path, f"split_{i}.pkl")
+                df = pd.read_pickle(save_path)
+                dfs.append(df)
+
+            if today_only:
+                break
+            start_date = query_end_date + datetime.timedelta(days=1)
+
+        return pd.concat(dfs, ignore_index=True)
+
     def store_data(
         self,
-        save_file_name: str = "master_data.pkl",
+        save_file_name: str = "master_data_iterative.pkl",
         max_results: int = 500,
         days: int = 365,
     ) -> None:
         # Call the get_results method and store the dataframe in the self.extracted_data attribute
-        self.extracted_data = self.get_results(max_results, days)
+        self.extracted_data = self.get_results_iterative(max_results, days)
 
         assert len(self.extracted_data) > 0, "Got no results with the search query"
         # Feature Engineer two new columns

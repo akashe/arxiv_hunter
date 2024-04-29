@@ -24,19 +24,25 @@ from src.logics import arxiv_search
 from src.app import schemas
 from src.logics.arxiv_recommender import LearnTransformVocabulary
 
-# import sys
-# sys.modules["__main__"].LearnTransformVocabulary = LearnTransformVocabulary
+import sys
+sys.modules["__main__"].LearnTransformVocabulary = LearnTransformVocabulary
 
 
 recommender = Recommender(
-    vocabulary_path="data/transformed_data.pkl", vectorizer_path="data/vectorizer.pkl"
-)
+        vectorizer_path="data/vectorizer.pkl",
+        vocabulary_path="data/transformed_data.pkl",
+    )
+
+df = pd.read_pickle("data/master_data.pkl")
+
 search = arxiv_search.ArxivSearcher()
 
 BASE_PATH = Path(__file__).resolve().parent
 print(f"BASE_PATH: {BASE_PATH}")
 
 app = _fastapi.FastAPI()
+
+app.include_router(user_router)
 auth_handler = auth.AuthHandler()
 create_db_and_tables()
 
@@ -69,13 +75,11 @@ def get_recommendations(query: str = Query(default="LLM, Attention, GPT"), user=
     """Arxiv Research Paper Recommendation"""
     try:
         # Perform validation and recommendation steps (refer to previous responses for details)
-        vocabulary = LearnTransformVocabulary(json_data="../../data/master_data.json")
         recommendations = recommender.recommend(query=query)
-        df = pd.read_json("data/master_data.json")
         recommended_papers = []
 
         # Create RecommendedPaper instances for each recommendation
-        for index, _ in recommendations:
+        for index in recommendations:
             paper_data = df.iloc[index].to_dict()
             recommended_papers.append(schemas.RecommendedPaper(**paper_data))
 
