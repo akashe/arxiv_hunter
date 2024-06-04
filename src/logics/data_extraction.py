@@ -11,7 +11,7 @@ import pandas as pd
 from datetime import datetime, timedelta
 import fitz  # this is pymupdf
 from typing import Dict, List, Tuple
-import datetime
+import datetime as dt
 
 STANDARD_SEARCH_QUERY = f"cat:cs.CV OR cat:cs.AI OR cat:cs.LG OR cat:cs.CL OR cat:cs.NE OR cat:stat.ML OR cat:cs.IR"
 
@@ -136,19 +136,20 @@ class ArxivParser:
         search_query: str = STANDARD_SEARCH_QUERY,
         num_threads: int = 8,
         today_only: bool = False,
-        time_delta_for_each_call: int = 120
+        time_delta_for_each_call: int = 50
     ) -> pd.DataFrame:
 
-        end_date = datetime.date.today()
+        end_date = dt.date.today()
         if today_only:
             start_date = end_date
         else:
-            start_date = end_date - datetime.timedelta(days=days)
+            start_date = end_date - dt.timedelta(days=days)
+        print(start_date, end_date)
 
         dfs = []
         while start_date <= end_date:
             query_start_date = start_date
-            query_end_date = min(start_date + datetime.timedelta(days=time_delta_for_each_call), end_date)
+            query_end_date = min(start_date + dt.timedelta(days=time_delta_for_each_call), end_date)
 
             # Construct the url with the query parameters
             params = {
@@ -198,7 +199,7 @@ class ArxivParser:
 
             if today_only:
                 break
-            start_date = query_end_date + datetime.timedelta(days=1)
+            start_date = query_end_date + dt.timedelta(days=1)
 
         return pd.concat(dfs, ignore_index=True)
 
@@ -254,6 +255,15 @@ if __name__ == "__main__":
         default=365*2,
     )
 
+    parser.add_argument(
+        "-s",
+        "--save_file_name",
+        type=str,
+        help="Store only for these many past days",
+        nargs="?",
+        default="master_data_iterative.pkl",
+    )
+
     # Parse the arguments
     args = parser.parse_args()
 
@@ -264,4 +274,4 @@ if __name__ == "__main__":
     parser = ArxivParser()
 
     # store the past data
-    parser.store_data(max_results=max_results, days=days)
+    parser.store_data(max_results=max_results, days=days, save_file_name= args.save_file_name)

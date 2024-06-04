@@ -8,7 +8,7 @@ function ExpandableText({ title }) {
 
   return (
     <>
-      <p className={`${isClamped ? "line-clamp-3" : "lg:line-clamp-none"}`}>{title}</p>
+      <div className={`${isClamped ? "line-clamp-3" : "lg:line-clamp-none"}`}>{title}</div>
       <button
         onClick={handleClick}
         className="font-sm text-blue-600">

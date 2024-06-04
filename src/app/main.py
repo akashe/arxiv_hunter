@@ -1,5 +1,5 @@
 """Entry Point for the FastAPI App"""
-
+import pdb
 from pathlib import Path
 from typing import List
 from fastapi import FastAPI, HTTPException, Query, Request, Depends
@@ -16,6 +16,7 @@ import sqlalchemy.orm as _orm
 from .auth import auth
 from .endpoints.user_endpoints import user_router
 from .models.user_models import *
+from .data_cache import Cache
 
 from .db.db import create_db_and_tables
 
@@ -25,15 +26,18 @@ from src.app import schemas
 from src.logics.arxiv_recommender import LearnTransformVocabulary
 
 import sys
+
 sys.modules["__main__"].LearnTransformVocabulary = LearnTransformVocabulary
 
-
 recommender = Recommender(
-        vectorizer_path="data/vectorizer.pkl",
-        vocabulary_path="data/transformed_data.pkl",
-    )
+    vectorizer_path="data/vectorizer.pkl",
+    vocabulary_path="data/transformed_data.pkl",
+)
 
-df = pd.read_pickle("data/master_data.pkl")
+df_cached = Cache(data_path="data/master_data.pkl",
+                  expiration=10000)
+todays_data_df_cached = Cache(data_path="data/todays_data.pkl",
+                              expiration=10000)
 
 search = arxiv_search.ArxivSearcher()
 
@@ -70,13 +74,17 @@ def homepage(request: Request, user=Depends(auth_handler.auth_wrapper)):
         name="index.html", context={"request": request, "name": "Subrata Mondal"}
     )
 
+
 @app.get(path="/recommend", response_model=List[schemas.RecommendedPaper])
 def get_recommendations(query: str = Query(default="LLM, Attention, GPT"), user=Depends(auth_handler.auth_wrapper)):
     """Arxiv Research Paper Recommendation"""
     try:
         # Perform validation and recommendation steps (refer to previous responses for details)
+
         recommendations = recommender.recommend(query=query)
         recommended_papers = []
+
+        df = df_cached.get_data()
 
         # Create RecommendedPaper instances for each recommendation
         for index in recommendations:
@@ -89,5 +97,27 @@ def get_recommendations(query: str = Query(default="LLM, Attention, GPT"), user=
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
         ) from e
+
+
+@app.get(path="/get_today_papers", response_model=List[schemas.RecommendedPaper])
+def get_today_papers(user=Depends(auth_handler.auth_wrapper)):
+    """Arxiv Research Paper Recommendation"""
+    try:
+        todays_data_df = todays_data_df_cached.get_data()
+        todays_paper = []
+
+        # TODO: do this better
+        # Create RecommendedPaper instances for each recommendation
+        for index in range(0, len(todays_data_df)):
+            paper_data = todays_data_df.iloc[index].to_dict()
+            todays_paper.append(schemas.RecommendedPaper(**paper_data))
+
+        return todays_paper
+
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail=str(e)
+        ) from e
+
 
 app.include_router(router=user_router)

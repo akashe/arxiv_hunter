@@ -63,21 +63,22 @@ class LearnTransformVocabulary(LearnVocabularyBase):
     def transform_data(self):
         self.transformed_data = self.vectorizer.transform(self.corpus)
 
-        try:
-            # load the vectorizer and the transformed data from the pickle files
-            with open("data/vectorizer.pkl", "rb") as f:
-                self.vectorizer = pickle.load(f)
-            with open("data/transformed_data.pkl", "rb") as f:
-                self.transformed_data = pickle.load(f)
-        except FileNotFoundError:
-            with open("data/vectorizer.pkl", "wb") as f:
-                pickle.dump(self.vectorizer, f)
-            with open("data/transformed_data.pkl", "wb") as f:
-                pickle.dump(self.transformed_data, f)
+        # try:
+        #     # load the vectorizer and the transformed data from the pickle files
+        #     with open("data/vectorizer.pkl", "rb") as f:
+        #         self.vectorizer = pickle.load(f)
+        #     with open("data/transformed_data.pkl", "rb") as f:
+        #         self.transformed_data = pickle.load(f)
+        # except FileNotFoundError:
+        with open("data/vectorizer.pkl", "wb") as f:
+            pickle.dump(self.vectorizer, f)
+        with open("data/transformed_data.pkl", "wb") as f:
+            pickle.dump(self.transformed_data, f)
 
 
 class Recommender:
     def __init__(self, vectorizer_path: str, vocabulary_path: str):
+        print(vectorizer_path,vocabulary_path)
         # load the vectorizer and the learnt vocabulary from the pickle files
         with open(vectorizer_path, "rb") as f:
             self.vectorizer = pickle.load(f)
@@ -111,6 +112,17 @@ class Recommender:
         ).flatten()
         top_related_indices = self.top100(cosine_similarities)
         return top_related_indices
+
+
+def update_vocab_with_new_data(master_data_path):
+
+    # Doing this way because issue with pickle and paths while loading
+    # I tried to save vectorizer and transformed data from cron.py but while loading them in app.main I get the error
+    # 'No module named 'logics''
+    _ = LearnTransformVocabulary(
+        data_path=master_data_path
+    )
+
 
 if __name__ == "__main__":
     # vocabulary = LearnTransformVocabulary(

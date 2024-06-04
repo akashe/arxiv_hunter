@@ -4,6 +4,7 @@ import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 
 import App from "./App.jsx"
+import TodaysPaper from './components/TodaysPaper.jsx';
 import NotFoundPage from "./ui/NotFoundPage.jsx"
 import UserProfile from "./user/UserProfile.jsx"
 import RegisterPage from "./auth/RegisterPage.jsx"
@@ -37,6 +38,11 @@ const router = createBrowserRouter([
   {
     path: "/test",
     element: <Test />,
+    errorElement: <NotFoundPage />,
+  },
+  {
+    path:"/today",
+    element: <TodaysPaper />,
     errorElement: <NotFoundPage />,
   },
 ])
