@@ -1,18 +1,19 @@
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import { ToastContainer } from "react-toastify"
-import "react-toastify/dist/ReactToastify.css"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import App from "./App.jsx"
+import App from "./App.jsx";
 import TodaysPaper from './components/TodaysPaper.jsx';
-import NotFoundPage from "./ui/NotFoundPage.jsx"
-import UserProfile from "./user/UserProfile.jsx"
-import RegisterPage from "./auth/RegisterPage.jsx"
-import LoginPage from "./auth/LoginPage.jsx"
-import Test from "./Test.jsx"
-import "./index.css"
+import NotFoundPage from "./ui/NotFoundPage.jsx";
+import UserProfile from "./user/UserProfile.jsx";
+import RegisterPage from "./auth/RegisterPage.jsx";
+import LoginPage from "./auth/LoginPage.jsx";
+import Test from "./Test.jsx";
+import Layout from "./components/Layout";
+import "./index.css";
 
-const token = localStorage.getItem("appToken")
+const token = localStorage.getItem("token");
 
 const router = createBrowserRouter([
   {
@@ -27,7 +28,13 @@ const router = createBrowserRouter([
   },
   {
     path: "/profile",
-    element: token ? <UserProfile loggedIn={token ? true : false}></UserProfile> : <LoginPage />,
+    element: token ? (
+      <Layout>
+        <UserProfile loggedIn={!!token} />
+      </Layout>
+    ) : (
+      <LoginPage />
+    ),
     errorElement: <NotFoundPage />,
   },
   {
@@ -37,19 +44,29 @@ const router = createBrowserRouter([
   },
   {
     path: "/test",
-    element: <Test />,
+    element: (
+      <Layout>
+        <Test />
+      </Layout>
+    ),
     errorElement: <NotFoundPage />,
   },
   {
-    path:"/today",
-    element: <TodaysPaper />,
+    path: "/today",
+    element: token ? (
+      <Layout>
+        <TodaysPaper />
+      </Layout>
+    ) : (
+      <LoginPage />
+    ),
     errorElement: <NotFoundPage />,
   },
-])
+]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <>
     <RouterProvider router={router} />
     <ToastContainer />
   </>
-)
+);

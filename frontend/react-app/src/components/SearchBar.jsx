@@ -15,7 +15,7 @@ function SearchBar({ setSearchResults }) {
         },
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("appToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       })
       console.log(data)

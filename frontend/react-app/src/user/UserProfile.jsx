@@ -9,7 +9,7 @@ const useLogout = () => {
   const navigate = useNavigate()
 
   const handleLogout = async () => {
-    localStorage.removeItem("appToken")
+    localStorage.removeItem("token")
     navigate("/login")
   }
 

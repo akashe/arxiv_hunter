@@ -4,16 +4,16 @@ import axios from "axios";
 
 import ExpandableText from "./ExpandableText";
 import SearchBar from "./SearchBar";
-import Loading from "./Loading"
+import Loading from "./Loading";
 
-function Main() {
-  const [arxivData, setArxivData] = useState([])
-  const [searchResults, setSearchResults] = useState([])
-  const [loading, setLoading] = useState(true)
+function MainComponent() {
+  const [arxivData, setArxivData] = useState([]);
+  const [searchResults, setSearchResults] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   async function fetchUsers() {
     try {
-      setLoading(true) // Set loading to true before fetching data
+      setLoading(true); // Set loading to true before fetching data
       const { data } = await axios.get("http://127.0.0.1:8000/recommend", {
         params: {
           // localStorage.getItem("preferences")
@@ -21,23 +21,25 @@ function Main() {
         },
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${localStorage.getItem("appToken")}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-      })
-      console.log(data)
-      setArxivData(data)
-      setLoading(false) // Set loading to false when fetching is done
+      });
+      console.log(data);
+      setArxivData(data);
+      setLoading(false); // Set loading to false when fetching is done
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   }
+
   useEffect(() => {
-    fetchUsers()
-  }, [])
+    fetchUsers();
+  }, []);
+
   return (
     <div>
-      <SearchBar setSearchResults={setSearchResults} />(
-      <main className="min-h-screen flex flex-col flex-grow my-40">
+      <SearchBar setSearchResults={setSearchResults} />
+      <main className="min-h-screen flex flex-col flex-grow my-20">
         {searchResults.length > 0 ? (
           loading ? (
             <Loading />
@@ -46,15 +48,14 @@ function Main() {
               return (
                 <div
                   key={data?.id}
-                  className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
+                  className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg"
+                >
                   <div className="mb-1 text-base font-semibold text-black">{data?.title}</div>
                   <div className="text-sm text-black">
                     <ExpandableText title={data?.summary}></ExpandableText>
                   </div>
                   <div className="flex justify-center">
-                    <Link
-                      to={data?.id}
-                      target="_blank">
+                    <Link to={data?.id} target="_blank">
                       <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +63,8 @@ function Main() {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-6 h-6 flex justify-center items-center">
+                          className="w-6 h-6 flex justify-center items-center"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -71,9 +73,7 @@ function Main() {
                         </svg>
                       </button>
                     </Link>
-                    <Link
-                      to={data?.pdf_link}
-                      target="_blank">
+                    <Link to={data?.pdf_link} target="_blank">
                       <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +81,8 @@ function Main() {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-6 h-6">
+                          className="w-6 h-6"
+                        >
                           <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -92,7 +93,7 @@ function Main() {
                     </Link>
                   </div>
                 </div>
-              )
+              );
             })
           )
         ) : loading ? (
@@ -102,15 +103,14 @@ function Main() {
             return (
               <div
                 key={data?.id}
-                className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg">
+                className="text-start mx-4 mt-4 p-3 bg-gradient-to-bl from-white via-white to bg-blue-50 border-blue-50 border-2 rounded-md shadow-lg"
+              >
                 <div className="mb-1 text-base font-semibold text-black">{data?.title}</div>
                 <div className="text-sm text-black">
                   <ExpandableText title={data?.summary}></ExpandableText>
                 </div>
                 <div className="flex justify-center">
-                  <Link
-                    to={data?.id}
-                    target="_blank">
+                  <Link to={data?.id} target="_blank">
                     <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -118,7 +118,8 @@ function Main() {
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6 flex justify-center items-center">
+                        className="w-6 h-6 flex justify-center items-center"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -127,17 +128,16 @@ function Main() {
                       </svg>
                     </button>
                   </Link>
-                  <Link
-                    to={data?.pdf_link}
-                    target="_blank">
-                    <button className=" bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
+                  <Link to={data?.pdf_link} target="_blank">
+                    <button className="bg-slate-100 rounded-full h-10 w-10 mr-2 hover:bg-slate-200 flex justify-center items-center">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         fill="none"
                         viewBox="0 0 24 24"
                         strokeWidth={1.5}
                         stroke="currentColor"
-                        className="w-6 h-6">
+                        className="w-6 h-6"
+                      >
                         <path
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -148,13 +148,12 @@ function Main() {
                   </Link>
                 </div>
               </div>
-            )
+            );
           })
         )}
       </main>
-      )
     </div>
-  )
+  );
 }
 
-export default Main;
+export default MainComponent;

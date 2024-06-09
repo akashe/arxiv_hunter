@@ -5,7 +5,7 @@ const useRedirectToLogin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const appToken = localStorage.getItem("appToken");
+    const appToken = localStorage.getItem("token");
     if (!appToken) {
       navigate("/login");
     }

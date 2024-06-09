@@ -1,19 +1,17 @@
-import Header from "./components/Header"
-import Main from "./components/DynamicList"
-import SearchBar from "./components/SearchBar"
-import useRedirectToLogin from "./components/RedirectToLogin"
-import TabsComponent from './components/Tabs';
+import Layout from "./components/Layout";
+import Main from "./components/DynamicList";
+import SearchBar from "./components/SearchBar";
+import useRedirectToLogin from "./components/RedirectToLogin";
 
 function App() {
-  useRedirectToLogin()
+  useRedirectToLogin();
+
   return (
-    <div className="max-w-[800px] min-w-min bg-white mx-auto m-0">
-      <Header />
+    <Layout>
       <SearchBar />
-      <TabsComponent />
       <Main />
-    </div>
-  )
+    </Layout>
+  );
 }
 
-export default App
+export default App;
